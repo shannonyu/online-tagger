@@ -29,11 +29,58 @@ public:
     Model();
     ~Model();
 
+    /*
+     * Regist alphabet to the model.
+     *
+     *  @param[in]  name        the alphabet unique name
+     *  @param[in]  alpha       the pointer to the alphabet
+     *  @param[in]  overwrite   if the overwrite handle is true, the alphabet 
+     *                          is overwrited when same-name alphabet is 
+     *                          registed.
+     */
     void registAlphabet(const char *name, Alphabet *alpha, bool overwrite = false);
+
+    /*
+     * Regist parameter to the model.
+     *
+     *  @param[in]  name        the parameter's unique name
+     *  @param[in]  param       the pointer to the parameter
+     *  @param[in]  overwrite   if the overwirte handle is true, the parameter
+     *                          is overwrited when same-name alphabet is
+     *                          registed.
+     */
     void registParameter(const char *name, Parameter *param, bool overwrite = false);
-    int numAlphabet(const char *name);
-    int numParameter(const char *name);
+
+    /*
+     * Get alphabet of certain name.
+     *
+     *  @param[in]  name    the alphabet's name.
+     *  @return     pointer to the alphabet.
+     *              NULL is returned when error accurd.
+     */
+    Alphabet *getAlphabet(const char *name);
+
+    /*
+     * Get parameter of certain name.
+     *
+     *  @param[in]  name    the parameter's name.
+     *  @return     pointer to the parameter.
+     *              NULL is returned when error accured.
+     */
+    Parameter *getParameter(const char *name);
+
+    /*
+     *
+     *
+     *
+     */
     int saveModel(const char *filename);
+
+    /*
+     *
+     *
+     *
+     */
     int loadModel(const char *filename);
 
 private:

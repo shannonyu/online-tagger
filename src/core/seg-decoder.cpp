@@ -20,7 +20,11 @@ using namespace ltp::utility;
 // ----------------------------------------------
 // PLAIN DECODER
 // ----------------------------------------------
-SegmentDecoder :: SegmentDecoder(IndexBuilder *idbuilder, int agenda): m_IdBuilder(idbuilder), m_Agenda(agenda) {
+SegmentDecoder::SegmentDecoder(
+        Model *model,
+        int agenda) {
+    this->m_Model  = model;
+    this->m_Agenda = agenda;
 }
 
 SegmentDecoder :: ~SegmentDecoder() {
@@ -31,8 +35,8 @@ SegmentDecoder :: decode(Instance *inst, Parameter *param) {
 
     Items *items = inst->items();
     int len = items->size();
-    int numFeatures = m_IdBuilder->numFeatures();
-    int numLabels   = m_IdBuilder->numLabels();
+    int numFeatures = m_Model->getAlphabet("FEATURES")->size();
+    int numLabels   = m_Model->getAlphabet("LABELS")->size();
 
     double **uniScoreCache = new double *[len];
     for (int i = 0; i < len; ++ i) {
@@ -53,7 +57,10 @@ SegmentDecoder :: decode(Instance *inst, Parameter *param) {
         biScoreCache[prevLabel] = new double[numLabels];
         for (int currLabel = 0; currLabel < numLabels; ++ currLabel) {
             biScoreCache[prevLabel][currLabel] = param->value(
-                    m_IdBuilder->index(prevLabel, currLabel, true));
+                    numFeatures * numLabels
+                    + prevLabel * numLabels
+                    + currLabel);
+
         }
     }
 

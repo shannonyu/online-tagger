@@ -82,30 +82,28 @@ main_learn(ltp_configure *cfg) {
     TRACE_LOG("Num label: %d", labels->size());
     TRACE_LOG("Num forms: %d", chars->size());
 
-    IndexBuilder *idbuilder = new IndexBuilder(features->size(), labels->size());
+    Model *model = new Model();
+
+    model->registAlphabet("FEATURES", features);
+    model->registAlphabet("LABELS", labels);
+
+    // IndexBuilder *idbuilder = new IndexBuilder(features->size(), labels->size());
 
     int agenda = atoi(cfg->config("agenda").c_str());
 
-    Decoder *decoder = new SegmentDecoder(idbuilder, agenda);
+    Decoder *decoder = new SegmentDecoder(model, agenda);
     Evaluator *evaluator = new SegmentEvaluator(
             cfg->config("dict").c_str(), chars, labels);
 
     Trainer *trainer = NULL;
 
     if ("MIRA" == cfg->config("algorithm")) {
-        trainer = new MiraTrainer( evaluator, idbuilder );
+        trainer = new MiraTrainer( evaluator, model );
     } else if ("Perceptron" == cfg->config("algorithm")) {
-        trainer = new PerceptronTrainer( idbuilder );
+        trainer = new PerceptronTrainer( model );
     } else {
         return -1;
     }
-
-    Model *model = new Model();
-
-    model->registAlphabet("FEATURES", features);
-    model->registAlphabet("LABELS", labels);
-
-    TRACE_LOG("Decoder, Trainer, Evaluator is prepared.");
 
     OnlineLearner *learner = new OnlineLearner(
             cfg, model, decoder, trainer, evaluator);

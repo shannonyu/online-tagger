@@ -34,6 +34,14 @@ public:
      *  @param  data    the data
      */
     void tag(Data *data);
+
+    /*
+     *
+     *
+     *
+     */
+    void tag(const char *data_file);
+
 private:
     ltp_configure *cfg;
     Decoder *decoder;

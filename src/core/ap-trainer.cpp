@@ -10,8 +10,17 @@
  */
 #include "ap-trainer.h"
 
+PerceptronTrainer::PerceptronTrainer(Model *model){
+    this->m_Model = model;
+    this->m_NumFeatures = model->getAlphabet("FEATURES")->size();
+    this->m_NumLabels   = model->getAlphabet("LABELS")->size();
+}
+
+PerceptronTrainer::~PerceptronTrainer(){
+}
+
 void
-PerceptronTrainer :: train(Instance *inst, DecodeResults *results, Parameter *param, double curUpdSeq) {
+PerceptronTrainer::train(Instance *inst, DecodeResults *results, Parameter *param, double curUpdSeq) {
 
     Labels *goldLabels = inst->labels();
     Labels *predLabels = results->best();
@@ -42,17 +51,22 @@ PerceptronTrainer :: train(Instance *inst, DecodeResults *results, Parameter *pa
 
     for (int i = 0; i < len; ++ i) {
         if (i == 0) {
-            key = m_IdBuilder->index( m_IdBuilder->numLabels(), goldLabels->at(i), true );
-            param->update( key, 1.0 );
+            param->update(m_NumFeatures * m_NumLabels
+                    + m_NumLabels * m_NumLabels
+                    + goldLabels->at(i), 1.0);
 
-            key = m_IdBuilder->index( m_IdBuilder->numLabels(), predLabels->at(i), true );
-            param->update( key, -1.0 );
+            param->update(m_NumFeatures * m_NumLabels
+                    + m_NumLabels * m_NumLabels
+                    + predLabels->at(i), -1.0);
+
         } else {
-            key = m_IdBuilder->index( goldLabels->at(i - 1), goldLabels->at(i), true );
-            param->update( key, 1.0 );
+            param->update(m_NumFeatures * m_NumLabels
+                    + goldLabels->at(i - 1) * m_NumLabels
+                    + goldLabels->at(i), 1.0);
 
-            key = m_IdBuilder->index( predLabels->at(i - 1), predLabels->at(i), true );
-            param->update( key, -1.0 );
+            param->update(m_NumFeatures * m_NumLabels
+                    + predLabels->at(i - 1) * m_NumLabels
+                    + predLabels->at(i), -1.0);
         }
     }
 }

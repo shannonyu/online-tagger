@@ -18,14 +18,14 @@
 #include "ltp-trainer.h"
 #include "ltp-data.h"       // Instance *, DecodeResult *
 #include "ltp-parameter.h"  // Parameter *
-#include "index-builder.h"  // TODO
+#include "model.h"
 
 using namespace ltp::framework;
 
 class PerceptronTrainer : public Trainer {
 public:
-    PerceptronTrainer(IndexBuilder *builder) : m_IdBuilder(builder) {}
-    ~PerceptronTrainer() {}
+    PerceptronTrainer(Model *model);
+    ~PerceptronTrainer();
 
     void train(Instance *inst,
             DecodeResults *result,
@@ -33,7 +33,10 @@ public:
             double curUpdSeq);
 
 private:
-    IndexBuilder *m_IdBuilder;
+    Model *m_Model;
+
+    int m_NumFeatures;
+    int m_NumLabels;
 };
 
 #endif  // end for __PERCEPTRON_TRAINER_H__

@@ -13,8 +13,8 @@
 #define __MIRA_TRAINER_H__
 
 #include "ltp-trainer.h"
-#include "pos-evaluator.h"
-#include "index-builder.h"
+#include "ltp-evaluator.h"
+#include "model.h"
 
 using namespace ltp::framework;
 
@@ -22,8 +22,8 @@ class MiraTrainer : public Trainer {
 public:
     // TODO
     MiraTrainer(Evaluator *evaluator,
-        IndexBuilder *idbuilder) : m_Evaluator(evaluator), m_IdBuilder(idbuilder) {}
-    ~MiraTrainer() {}
+        Model *model);
+    ~MiraTrainer();
 
     void train(Instance *inst,
             DecodeResults *results,
@@ -56,8 +56,10 @@ private:
             Parameter *param);
 
 private:
-    Evaluator    *m_Evaluator;
-    IndexBuilder *m_IdBuilder;
+    Evaluator *m_Evaluator;
+    Model *m_Model;
+    int m_NumFeatures;
+    int m_NumLabels;
 };
 
 

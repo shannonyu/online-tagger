@@ -57,6 +57,7 @@ int DecodeRule::load(const char *filename) {
 
         if (sep[0] == "word") {
             int condition = m_WordDict->lookup( sep[1].c_str() );
+
             if (condition < 0) {
                 continue;
             }
@@ -64,6 +65,7 @@ int DecodeRule::load(const char *filename) {
             for (int i = 0; i < numLabels; ++ i) {
                 m_LegalMat[condition * numLabels + i] = false;
             }
+
             for (int i = 2; i < sep.size(); ++ i) {
                 int tag = m_LabelDict->lookup( sep[i].c_str() );
 
@@ -87,12 +89,24 @@ bool DecodeRule::legal(int condition, int tag) {
     return false;
 }
 
-DecodeResults* RuleDecoder::decode(Instance *inst, Parameter *param) {
+RuleDecoder::RuleDecoder(DecodeRule *rule,
+        Model *model,
+        int agenda) {
+    this->m_Rule   = rule;
+    this->m_Model  = model;
+    this->m_Agenda = agenda;
+}
+
+RuleDecoder::~RuleDecoder() {
+}
+
+DecodeResults*
+RuleDecoder::decode(Instance *inst, Parameter *param) {
 
     Items* items = inst->items();
     int len = items->size();
-    int numFeatures = m_IdBuilder->numFeatures();
-    int numLabels   = m_IdBuilder->numLabels();
+    int numFeatures = m_Model->getAlphabet("FEATURES")->size();
+    int numLabels   = m_Model->getAlphabet("LABELS")->size();
 
     // Caching unigram feature score.
     double **uniScoreCache = new double*[len];
@@ -124,7 +138,9 @@ DecodeResults* RuleDecoder::decode(Instance *inst, Parameter *param) {
 
         for (int currLabel = 0; currLabel < numLabels; ++ currLabel) {
             biScoreCache[prevLabel][currLabel] = param->value(
-                    m_IdBuilder->index(prevLabel, currLabel, true));
+                    numFeatures * numLabels
+                    + prevLabel * numLabels
+                    + currLabel);
         }
     }
 
@@ -136,9 +152,8 @@ DecodeResults* RuleDecoder::decode(Instance *inst, Parameter *param) {
         }
     }
 
-    // Accurate decode algorithm
+    // K-Best viterbi algorithm
     for (int i = 0; i < len; ++ i) {
-
         for (int currLabel = 0; currLabel < numLabels; ++ currLabel) {
             if ( m_Rule->legal( items->at(i)->form(), currLabel ) == false ) {
                 continue;
@@ -167,6 +182,8 @@ DecodeResults* RuleDecoder::decode(Instance *inst, Parameter *param) {
         }
     }
 
+    // Sort the final result in desenting order.
+    // It's a little tricky to store the best result in first position.
     sort( result_cache.begin(), result_cache.end() );
 
     DecodeResults *ret = new CppDecodeResults();

@@ -13,8 +13,20 @@
 #include "ltp-math.h"
 using namespace ltp::math;
 
+MiraTrainer::MiraTrainer(Evaluator *evaluator,
+        Model *model) {
+    this->m_Evaluator = evaluator;
+    this->m_Model     = model;
+
+    this->m_NumFeatures = model->getAlphabet("FEATURES")->size();
+    this->m_NumLabels   = model->getAlphabet("LABELS")->size();
+}
+
+MiraTrainer::~MiraTrainer(){
+}
+
 void
-MiraTrainer :: train(Instance *inst, DecodeResults *results, Parameter *param, double curUpdSeq) {
+MiraTrainer::train(Instance *inst, DecodeResults *results, Parameter *param, double curUpdSeq) {
 
     int num_results = results->size();
     Items  *items = inst->items();
@@ -26,6 +38,8 @@ MiraTrainer :: train(Instance *inst, DecodeResults *results, Parameter *param, d
 
     double gold_score = calInstScore( items, goldLabels, param);
 
+    // TODO
+    // evaluator->LossValue(results, inst, b);
     computeLossValue(results, inst, b);
 
     for (int i = 0; i < num_results; ++ i) {
@@ -52,11 +66,21 @@ MiraTrainer :: train(Instance *inst, DecodeResults *results, Parameter *param, d
 
         for (int j = 0; j < items->size(); ++ j) {
             if (j == 0) {
-                a[i].add( m_IdBuilder->index( m_IdBuilder->numLabels(), goldLabels->at(j), true ), 1.0);
-                a[i].add( m_IdBuilder->index( m_IdBuilder->numLabels(), predLabels->at(j), true ), -1.0);
+                a[i].add( m_NumFeatures * m_NumLabels
+                        + m_NumLabels * m_NumLabels
+                        + goldLabels->at(j), 1.0);
+
+                a[i].add( m_NumFeatures * m_NumLabels
+                        + m_NumLabels * m_NumLabels 
+                        + predLabels->at(j), -1.0);
             } else {
-                a[i].add( m_IdBuilder->index( goldLabels->at(j - 1), goldLabels->at(j), true ), 1.0);
-                a[i].add( m_IdBuilder->index( predLabels->at(j - 1), predLabels->at(j), true ), -1.0);
+                a[i].add( m_NumFeatures * m_NumLabels
+                        + goldLabels->at(j - 1) * m_NumLabels
+                        + goldLabels->at(j), 1.0);
+
+                a[i].add( m_NumFeatures * m_NumLabels
+                        + predLabels->at(j - 1) * m_NumLabels
+                        + predLabels->at(j), -1.0);
             }
         }
 
@@ -82,7 +106,7 @@ MiraTrainer :: train(Instance *inst, DecodeResults *results, Parameter *param, d
 }
 
 void
-MiraTrainer :: computeLossValue(DecodeResults* results, Instance *inst, double *value) {
+MiraTrainer::computeLossValue(DecodeResults* results, Instance *inst, double *value) {
     Labels *gold = inst->labels();
     for (int i = 0; i < results->size(); ++ i) {
         Labels *result = results->at(i);
@@ -116,9 +140,11 @@ MiraTrainer :: calInstScore(Items *items, Labels *labels, Parameter *param) {
 
     for (int i = 0; i < items->size(); ++ i) {
         int label = labels->at(i);
-        int prevLabel = i == 0 ? m_IdBuilder->numLabels() : labels->at(i - 1);
+        int prevLabel = i == 0 ? m_NumLabels : labels->at(i - 1);
 
-        ret += param->value( m_IdBuilder->index(prevLabel, label, true) );
+        ret += param->value(m_NumFeatures*m_NumLabels
+                + prevLabel * m_NumLabels
+                + label);
     }
     return ret;
 }

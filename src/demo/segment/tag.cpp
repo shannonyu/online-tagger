@@ -41,9 +41,9 @@ main_tag(ltp_configure *cfg) {
     Extractor *extractor = new SegmentExtractor(dictFile, features, labels, words);
     Data *data = extractor->extract(corpus, false);
 
-    IndexBuilder *idBuilder = new IndexBuilder(features->size(), labels->size());
-    int agenda = atoi(cfg->config("agenda").c_str());
-    Decoder *decoder = new SegmentDecoder(idBuilder, agenda);
+    // IndexBuilder *idBuilder = new IndexBuilder(features->size(), labels->size());
+    // int agenda = atoi(cfg->config("agenda").c_str());
+    Decoder *decoder = new SegmentDecoder(model, 1);
     Evaluator *evaluator = new SegmentEvaluator(dictFile, words, labels);
 
     OnlineTagger *tagger = new OnlineTagger(cfg, decoder, evaluator, param);

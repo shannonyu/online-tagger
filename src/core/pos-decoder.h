@@ -14,7 +14,7 @@
 #include "ltp-decoder.h"
 #include "ltp-alphabet.h"
 
-#include "index-builder.h"
+#include "model.h"
 #include "ltp-math-const.h"
 
 using namespace ltp::math;
@@ -36,9 +36,9 @@ private:
 class RuleDecoder : public Decoder {
 public:
     RuleDecoder(DecodeRule *rule,
-            IndexBuilder *builder,
-            int agenda) : m_Rule(rule), m_IdBuilder(builder), m_Agenda(agenda) {}
-    ~RuleDecoder() {}
+            Model *model,
+            int agenda);
+    ~RuleDecoder();
 
     DecodeResults *decode(Instance *inst, Parameter *param);
 
@@ -68,8 +68,8 @@ private:
     };
 
 private:
-    int m_Agenda;
-    IndexBuilder *m_IdBuilder;
+    int        m_Agenda;
+    Model      *m_Model;
     DecodeRule *m_Rule;
 };
 

@@ -51,16 +51,21 @@ main_learn(ltp_configure *cfg) {
     TRACE_LOG("Num label: %d", tagAlpha->size());
     TRACE_LOG("Num forms: %d", itemAlpha->size());
 
+    Model *model = new Model();
+
+    model->registAlphabet("FEATURES", featAlpha);
+    model->registAlphabet("LABELS",   tagAlpha);
+
     DecodeRule *rule = new DecodeRule(itemAlpha, tagAlpha);
     if (rule->load(cfg->config("dict").c_str()) == -1 ) {
         rule = NULL;
     }
 
-    IndexBuilder *idbuilder = new IndexBuilder(featAlpha->size(), tagAlpha->size());
+    // IndexBuilder *idbuilder = new IndexBuilder(featAlpha->size(), tagAlpha->size());
 
     int agenda = atoi(cfg->config("agenda").c_str());
-    Decoder *decoder = new RuleDecoder(rule,
-            idbuilder, agenda);
+    //Decoder *decoder = new RuleDecoder(rule, idbuilder, agenda);
+    Decoder *decoder = new RuleDecoder(rule, model, agenda);
 
     Evaluator *evaluator = new PostagEvaluator(
             cfg->config("dict").c_str(), itemAlpha);
@@ -68,17 +73,12 @@ main_learn(ltp_configure *cfg) {
     Trainer *trainer = NULL;
 
     if ("MIRA" == cfg->config("algorithm")) {
-        trainer = new MiraTrainer( evaluator, idbuilder );
+        trainer = new MiraTrainer( evaluator, model );
     } else if ("Perceptron" == cfg->config("algorithm")) {
-        trainer = new PerceptronTrainer( idbuilder );
+        trainer = new PerceptronTrainer( model );
     } else {
         return -1;
     }
-
-    Model *model = new Model();
-
-    model->registAlphabet("FEATURES", featAlpha);
-    model->registAlphabet("LABELS",   tagAlpha);
 
     OnlineLearner *learner = new OnlineLearner(
             cfg, model, decoder, trainer, evaluator);

@@ -54,10 +54,9 @@ main_tag(ltp_configure *cfg) {
         rule = NULL;
     }
 
-    IndexBuilder *idBuilder = new IndexBuilder(featAlpha->size(), tagAlpha->size());
+    // IndexBuilder *idBuilder = new IndexBuilder(featAlpha->size(), tagAlpha->size());
     int agenda = atoi(cfg->config("agenda").c_str());
-    Decoder *decoder = new RuleDecoder(rule,
-            idBuilder, agenda);
+    Decoder *decoder = new RuleDecoder(rule, model, agenda);
     Evaluator *evaluator = new PostagEvaluator(cfg->config("dict").c_str(), itemAlpha);
 
     evaluator->start();

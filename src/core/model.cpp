@@ -66,7 +66,8 @@ void Model::registAlphabet(const char *name, Alphabet *alpha, bool overwrite) {
     m_NumAlpha ++;
 }
 
-void Model::registParameter(const char *name, Parameter *param, bool overwrite) {
+void
+Model::registParameter(const char *name, Parameter *param, bool overwrite) {
     for (int i = 0; i < m_NumParam; ++ i) {
         if (strcmp(m_ParamName[i], name) == 0) {
             if (overwrite) {
@@ -89,22 +90,24 @@ void Model::registParameter(const char *name, Parameter *param, bool overwrite) 
     m_NumParam ++;
 }
 
-int Model::numAlphabet(const char *name) {
+Alphabet *
+Model::getAlphabet(const char *name) {
     for (int i = 0; i < m_NumAlpha; ++ i) {
         if (strcmp(m_AlphaName[i], name) == 0) {
-            return m_Alpha[i]->size();
+            return m_Alpha[i];
         }
     }
-    return -1;
+    return NULL;
 }
 
-int Model::numParameter(const char *name) {
+Parameter *
+Model::getParameter(const char *name) {
     for (int i = 0; i < m_NumParam; ++ i) {
         if (strcmp(m_ParamName[i], name) == 0) {
-            return m_Param[i]->size();
+            return m_Param[i];
         }
     }
-    return -1;
+    return NULL;
 }
 
 int Model::saveModel(const char *filename) {

@@ -10,7 +10,7 @@
  */
 #include "index-builder.h"
 #include <cassert>
-
+/*
 int
 IndexBuilder :: index(int feature, int label, bool bigram) {
 	int base = 0;
@@ -35,3 +35,4 @@ int
 IndexBuilder :: numParameters() {
 	return m_NumFeatures * m_NumLabels + (m_NumLabels + 1) * m_NumLabels;
 }
+*/

@@ -14,7 +14,7 @@
 #include "ltp-decoder.h"
 #include "ltp-alphabet.h"
 
-#include "index-builder.h"
+#include "model.h"
 #include "ltp-math-const.h"
 
 using namespace ltp::math;
@@ -22,7 +22,7 @@ using namespace ltp::framework;
 
 class SegmentDecoder : public Decoder {
 public:
-    SegmentDecoder(IndexBuilder *builder,
+    SegmentDecoder(Model *model,
             int agenda);
     ~SegmentDecoder();
 
@@ -54,8 +54,8 @@ private:
     };
 
 private:
-    int m_Agenda;
-    IndexBuilder *m_IdBuilder;
+    int   m_Agenda;
+    Model *m_Model;
 };
 
 #endif  // end for __SEG_DECODER_H__
