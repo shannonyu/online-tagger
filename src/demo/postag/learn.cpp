@@ -8,7 +8,7 @@
 #include "pos-decoder.h"
 #include "mira-trainer.h"
 #include "ap-trainer.h"
-#include "index-builder.h"
+// #include "index-builder.h"
 
 #include "pos-reader.h"
 #include "pos-evaluator.h"

@@ -6,7 +6,7 @@
 #include "c-data.h"
 #include "c-parameter.h"
 #include "seg-decoder.h"
-#include "index-builder.h"
+// #include "index-builder.h"
 
 #include "model.h"
 #include "seg-reader.h"

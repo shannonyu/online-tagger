@@ -8,7 +8,7 @@
 #include "seg-decoder.h"
 #include "ap-trainer.h"
 #include "mira-trainer.h"
-#include "index-builder.h"
+// #include "index-builder.h"
 
 #include "seg-reader.h"
 #include "seg-evaluator.h"

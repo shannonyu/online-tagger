@@ -20,7 +20,7 @@
 #include "ltp-evaluator.h"
 
 #include "model.h"
-#include "index-builder.h"
+// #include "index-builder.h"
 #include "ltp-configure.h"
 
 using namespace ltp::framework;

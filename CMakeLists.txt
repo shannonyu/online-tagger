@@ -3,7 +3,8 @@ PROJECT (OnlineWordseg)
 MESSAGE(STATUS "This is BINARY dir" ${PROJECT_BINARY_DIR})
 MESSAGE(STATUS "This is SOURCE dir" ${PROJECT_SOURCE_DIR})
 
-SET(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -O3 -Wno-deprecated -ftemplate-depth-50 -fPIC -pg")
+#SET(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -O3 -Wno-deprecated -ftemplate-depth-50 -fPIC -pg")
+SET(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -O3 -Wno-deprecated -ftemplate-depth-50 -fPIC")
 SET(LINK_FLAGS "-pg")
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
