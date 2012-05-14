@@ -1,0 +1,31 @@
+# SVN #
+#######
+.svn
+
+# CMake #
+#########
+CMakeLists.txt
+
+# bin folder #
+##############
+bin/
+
+# build folder #
+################
+build/
+
+# model folder #
+################
+model/
+
+# log folder #
+##############
+log/
+
+# configure folder #
+####################
+conf/
+
+# script folder #
+#################
+script/
