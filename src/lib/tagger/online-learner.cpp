@@ -4,7 +4,6 @@
 #include "parameter.h"
 
 #include <sstream>
-#define __FAST__ 1
 
 OnlineLearner :: OnlineLearner(ltp_configure *cfg,
         Model *model,
@@ -17,15 +16,12 @@ OnlineLearner :: OnlineLearner(ltp_configure *cfg,
     handle ^= (1<<1);
     handle ^= (1<<3);
 
-#if __FAST__
     int numFeatures = model->numAlphabet("FEATURES");
     int numLabels   = model->numAlphabet("LABELS");
     int numParameters = numFeatures * numLabels + numLabels * (numLabels + 1);
+    TRACE_LOG("Dimension of parameter %d", numParameters);
     this->globalParam = new CParameter(
             handle, numParameters);
-#else
-    this->globalParam = new HashParameter();
-#endif
 
     this->cfg = cfg;
     this->model = model;
@@ -77,17 +73,9 @@ OnlineLearner :: learnIter(Data *data, int iter) {
     handle ^= (1<<1);
     handle ^= (1<<3);
 
-#if __FAST__
     CParameter *ret = new CParameter(handle, globalParam->size());
-#else
-    HashParameter *ret = new HashParameter();
-#endif
 
-#if __FAST__
     ret->copy((CParameter *)globalParam);
-#else
-    ret->copy((HashParameter *)globalParam);
-#endif
 
     for (int i = 0; i < ret->size(); ++ i) {
         ret->update(i, 0, (double)(iter + 1) * data->size() - 1);

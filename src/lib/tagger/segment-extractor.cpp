@@ -19,7 +19,7 @@
 using namespace ltp::utility;
 
 
-SegmentExtractor :: SegmentExtractor(
+SegmentExtractor::SegmentExtractor(
         const char *filename,
         Alphabet *featureDict,
         Alphabet *labelDict,
@@ -42,11 +42,11 @@ SegmentExtractor :: SegmentExtractor(
     fclose(fp);
 }
 
-SegmentExtractor :: ~SegmentExtractor() {
+SegmentExtractor::~SegmentExtractor() {
 }
 
-Data *
-SegmentExtractor :: extract(RawCorpus *corpus, bool append) {
+Data*
+SegmentExtractor::extract(RawCorpus *corpus, bool append) {
     Data *data = new CData();
 
     if (append) {
@@ -66,8 +66,8 @@ SegmentExtractor :: extract(RawCorpus *corpus, bool append) {
     return data;
 }
 
-Instance *
-SegmentExtractor :: extract(RawSentence *sent, bool append) {
+Instance* 
+SegmentExtractor::extract(RawSentence *sent, bool append) {
     Items *items = new CItems();
     Labels *labels = new CLabels();
 
@@ -99,11 +99,8 @@ SegmentExtractor :: extract(RawSentence *sent, bool append) {
     }
 
     for (int i = 0; i < len; ++ i) {
-#if __CPP_DATA__
-        Item *item = new CppItem(m_CharDict->insert(sent->at(i)->item()));
-#else
-        Item *item = new CItem(m_CharDict->insert(sent->at(i)->item()));
-#endif
+        // Item *item = new CItem(m_CharDict->insert(sent->at(i)->item()));
+        Item *item = new CItem(m_LabelDict->size());
 
         vector<string> featStrCache;
         vector<int>    featIntCache;
@@ -120,16 +117,16 @@ SegmentExtractor :: extract(RawSentence *sent, bool append) {
         featStrCache.push_back("UCT[1,0]="  + nextChar);
         featStrCache.push_back("UCT[2,0]="  + next2Char);
 
-        featStrCache.push_back("BCT[-2,0]=" + prev2Char + "#SP#" + prevChar);
-        featStrCache.push_back("BCT[-1,0]=" + prevChar  + "#SP#" + currChar);
-        featStrCache.push_back("BCT[0,0]="  + currChar  + "#SP#" + nextChar);
-        featStrCache.push_back("BCT[1,0]="  + nextChar  + "#SP#" + next2Char);
+        featStrCache.push_back("BCT[-2,0]=" + prev2Char + "/" + prevChar);
+        featStrCache.push_back("BCT[-1,0]=" + prevChar  + "/" + currChar);
+        featStrCache.push_back("BCT[0,0]="  + currChar  + "/" + nextChar);
+        featStrCache.push_back("BCT[1,0]="  + nextChar  + "/" + next2Char);
 
-        featStrCache.push_back("B2CT[-2,0]=" + prev2Char + "#SP#" + currChar);
-        featStrCache.push_back("B2CT[-1,0]=" + prevChar  + "#SP#" + nextChar);
-        featStrCache.push_back("B2CT[0,0]="  + currChar  + "#SP#" + next2Char);
+        featStrCache.push_back("B2CT[-2,0]=" + prev2Char + "/" + currChar);
+        featStrCache.push_back("B2CT[-1,0]=" + prevChar  + "/" + nextChar);
+        featStrCache.push_back("B2CT[0,0]="  + currChar  + "/" + next2Char);
 
-        featStrCache.push_back("TCT[-1,0]" + prevChar + "#SP#" + currChar + "#SP#" + nextChar);
+        featStrCache.push_back("TCT[-1,0]" + prevChar + "/" + currChar + "/" + nextChar);
 
         //featStrCache.push_back(
         if (currChar == prev2Char) {
@@ -150,17 +147,17 @@ SegmentExtractor :: extract(RawSentence *sent, bool append) {
 
         if (lexiconCache[i][0] > 0) {
             ostringstream S; S << lexiconCache[i][0];
-            featStrCache.push_back("startdict" + S.str());
+            featStrCache.push_back("startdict=" + S.str());
         }
 
         if (lexiconCache[i][1] > 0) {
             ostringstream S; S << lexiconCache[i][1];
-            featStrCache.push_back("enddict" + S.str());
+            featStrCache.push_back("enddict=" + S.str());
         }
 
         if (lexiconCache[i][2] > 0) {
             ostringstream S; S << lexiconCache[i][2];
-            featStrCache.push_back("middict" + S.str());
+            featStrCache.push_back("middict=" + S.str());
         }
 
         featIntCache.resize(featStrCache.size());

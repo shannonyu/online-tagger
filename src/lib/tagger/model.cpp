@@ -15,7 +15,7 @@
 using namespace ltp::utility;
 
 
-Model :: Model() {
+Model::Model() {
     m_NumAlpha = 0;
     m_CapAlpha = 0;
 
@@ -28,7 +28,7 @@ Model :: Model() {
     m_Param     = NULL;
 }
 
-Model :: ~Model() {
+Model::~Model() {
     for (int i = 0; i < m_NumAlpha; ++ i) {
         delete m_AlphaName[i];
     }
@@ -43,8 +43,7 @@ Model :: ~Model() {
     delete m_Param;
 }
 
-void
-Model :: registAlphabet(const char *name, Alphabet *alpha, bool overwrite) {
+void Model::registAlphabet(const char *name, Alphabet *alpha, bool overwrite) {
     for (int i = 0; i < m_NumAlpha; ++ i) {
        if (strcmp(m_AlphaName[i], name) == 0) {
            if (overwrite) {
@@ -57,7 +56,7 @@ Model :: registAlphabet(const char *name, Alphabet *alpha, bool overwrite) {
     if (m_NumAlpha >= m_CapAlpha) {
         m_CapAlpha = ((m_CapAlpha << 1) + 1);
         m_AlphaName = (char **)realloc(m_AlphaName, m_CapAlpha * sizeof(char *));
-        m_Alpha     = (Alphabet **)realloc(m_Alpha,     m_CapAlpha * sizeof(Alphabet *));
+        m_Alpha = (Alphabet **)realloc(m_Alpha, m_CapAlpha * sizeof(Alphabet *));
     }
 
     int len = strlen(name);
@@ -67,8 +66,7 @@ Model :: registAlphabet(const char *name, Alphabet *alpha, bool overwrite) {
     m_NumAlpha ++;
 }
 
-void 
-Model :: registParameter(const char *name, Parameter *param, bool overwrite) {
+void Model::registParameter(const char *name, Parameter *param, bool overwrite) {
     for (int i = 0; i < m_NumParam; ++ i) {
         if (strcmp(m_ParamName[i], name) == 0) {
             if (overwrite) {
@@ -91,8 +89,7 @@ Model :: registParameter(const char *name, Parameter *param, bool overwrite) {
     m_NumParam ++;
 }
 
-int
-Model :: numAlphabet(const char *name) {
+int Model::numAlphabet(const char *name) {
     for (int i = 0; i < m_NumAlpha; ++ i) {
         if (strcmp(m_AlphaName[i], name) == 0) {
             return m_Alpha[i]->size();
@@ -101,8 +98,7 @@ Model :: numAlphabet(const char *name) {
     return -1;
 }
 
-int
-Model :: numParameter(const char *name) {
+int Model::numParameter(const char *name) {
     for (int i = 0; i < m_NumParam; ++ i) {
         if (strcmp(m_ParamName[i], name) == 0) {
             return m_Param[i]->size();
@@ -111,8 +107,7 @@ Model :: numParameter(const char *name) {
     return -1;
 }
 
-int
-Model :: saveModel(const char *filename) {
+int Model::saveModel(const char *filename) {
     FILE *fp = fopen(filename, "w");
 
     if (NULL == fp) {
@@ -134,8 +129,7 @@ Model :: saveModel(const char *filename) {
     return 0;
 }
 
-int
-Model ::loadModel(const char *filename) {
+int Model::loadModel(const char *filename) {
     FILE *fp = fopen(filename, "r");
 
     if (NULL == fp) {

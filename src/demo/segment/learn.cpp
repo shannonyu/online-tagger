@@ -50,8 +50,7 @@ main_learn(ltp_configure *cfg) {
         WARNING_LOG("Failed to load test corpus");
 
     TRACE_LOG("Reading corpus is done.");
-    write_log(LTP_LOG_TRACE,
-            "Read train corpus [%d] line", trainCorpus->size());
+    TRACE_LOG("Read train corpus [%d] line", trainCorpus->size());
 
     Alphabet *features = new HashDict();
     Alphabet *labels   = new HashDict();
@@ -65,19 +64,28 @@ main_learn(ltp_configure *cfg) {
 
     Data* trainData = extractor->extract(trainCorpus, true); TRACE_LOG("train instances is extracted.");
     Data* devData = extractor->extract(devCorpus);           TRACE_LOG("dev instances is extracted.");
-    Data * testData = extractor->extract(testCorpus);        TRACE_LOG("test instance is extracted.");
+    Data* testData = extractor->extract(testCorpus);         TRACE_LOG("test instance is extracted.");
+
+    if (NULL == trainData) {
+        WARNING_LOG("No training instances is loaded.");
+        while(1){}
+        return -1;
+    }
 
     delete trainCorpus;
     delete testCorpus;
     delete devCorpus;
 
     TRACE_LOG("Extracting featrue is done.");
+    TRACE_LOG("Num feat: %d", features->size());
+    TRACE_LOG("Num label: %d", labels->size());
+    TRACE_LOG("Num char: %d", chars->size());
 
     IndexBuilder *idbuilder = new IndexBuilder(features->size(), labels->size());
 
     int agenda = atoi(cfg->config("agenda").c_str());
-    Decoder *decoder = new PlainDecoder(idbuilder, agenda);
 
+    Decoder *decoder = new PlainDecoder(idbuilder, agenda);
     Evaluator *evaluator = new SegmentEvaluator(
             cfg->config("dict").c_str(), chars, labels);
 
@@ -103,7 +111,6 @@ main_learn(ltp_configure *cfg) {
 
     learner->learn(trainData, devData, testData);
 
-    // delete rule;
     // delete idbuilder;
     delete decoder;
     delete trainData;
