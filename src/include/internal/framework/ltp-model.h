@@ -27,17 +27,21 @@ public:
     virtual ~Model() {}
 
     /*
+     * interface for registing alphabet to the model
      *
-     *
+     *  @param  name    the name of the alphabet
+     *  @param  alpha   the alphabet instance
      */
     void registAlphabet(const char *name, Alphabet *alpha) = 0;
 
     /*
+     * interface for registing parameter to the model
      *
-     *
-     *
+     *  @param  name    the name of the parameter
+     *  @param  param   the parameter instance
      */
     void registParameter(const char *name, Parameter *param) = 0;
+
     /*
      * An interface for saving model.
      *

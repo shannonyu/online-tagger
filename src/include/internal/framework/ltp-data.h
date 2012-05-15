@@ -15,14 +15,67 @@ namespace ltp {
 
 namespace framework {
 
+/*
+ * Define data storage interface of the framework.
+ *
+ * There are two fashions in feature extraction
+ *
+ *  - store the hash of (feature, tag) pair, which is used in
+ *    hash kernel experiment.
+ *  - store the feature string's hash value, which makes a more
+ *    harmoney memory consume.
+ *
+ * All of the above two fashion can be represent in a single way.
+ * When it comes to the second way, just bind the parameter with
+ * -1 or some invalid value.
+ *
+ * Tree structure of Data is shown below.
+ *
+ *  Data
+ *   `- Instance
+ *       |- Items
+ *       |   `- Item
+ *       `- Labels
+ */
 class Item {
 public:
     Item() {}
     virtual ~Item() {}
 
-    virtual void append(int index, int label) = 0;
+    /*
+     * interface for append a feature/(feature,tag) hash value to
+     * the item.
+     *
+     *  @param[in]  value   the hash value
+     *  @parma[in]  label   the label, can be binded with -1
+     */
+    virtual void append(int value, int label) = 0;
+
+    /*
+     * interface for get a feature/(feature,tag) hash value at
+     * certain index
+     *
+     *  @param[in]  index   the index
+     *  @param[in]  label   the label, can be binded with -1
+     *  @return     the hash value of a feature/(feature, tag)
+     */
     virtual int at(int index, int label) = 0;
+
+    /*
+     * interface for get number of features in the item
+     *
+     *  @param[in]  label   the label, can be binded with -1 
+     *                      NOTICE: some modification
+     *  @return     number of features in the item
+     */
     virtual int size(int label) = 0;
+
+    /*
+     * NOTICE
+     * some modification should be made.
+     *
+     * interface for get hash value of a forms.
+     */
     virtual int item() = 0;
 };
 
@@ -41,10 +94,14 @@ public:
     Labels() {}
     virtual ~Labels() {}
 
-    virtual void set(int label, int index) = 0;
-    virtual void append(int label) = 0;
     virtual void resize(int n) = 0;
+
+    virtual void set(int label, int index) = 0;
+
+    virtual void append(int label) = 0;
+
     virtual int at(int index) = 0;
+
     virtual int size() = 0;
 };
 

@@ -29,3 +29,7 @@ conf/
 # script folder #
 #################
 script/
+
+# test folder #
+###############
+src/test/

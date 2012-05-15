@@ -30,7 +30,7 @@ namespace framework {
 class Reader {
 public:
     Reader() {}
-    ~Reader() {}
+    virtual ~Reader() {}
 
     /*
      * An interface of opening the file

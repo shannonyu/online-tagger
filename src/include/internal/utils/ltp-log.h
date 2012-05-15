@@ -15,20 +15,20 @@ using namespace std;
 
 void write_log(int lvl, char *fmt, ...);
 
-#define debug_log(msg) do { \
-    write_log(LTP_LOG_DEBUG, "%s", msg); \
+#define DEBUG_LOG(msg, ...) do { \
+    write_log(LTP_LOG_DEBUG, msg, ##__VA_ARGS__); \
 } while (0);
 
-#define trace_log(msg) do { \
-    write_log(LTP_LOG_TRACE, "%s", msg); \
+#define TRACE_LOG(msg, ...) do { \
+    write_log(LTP_LOG_TRACE, msg, ##__VA_ARGS__); \
 } while (0);
 
-#define warning_log(msg) do { \
-    write_log(LTP_LOG_WARNING, "%s:%d:%s(): %s", __FILE__, __LINE__, __FUNCTION__, msg); \
+#define WARNING_LOG(msg, ...) do { \
+    write_log(LTP_LOG_WARNING, "%s:line %d:%s(): " msg, __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__); \
 } while (0);
 
-#define fatal_log(msg) do { \
-    write_log(LTP_LOG_FATAL, "%s:%d:%s(): %s", __FILE__, __LINE__, __FUNCTION__, msg); \
+#define FATAL_LOG(msg, ...) do { \
+    write_log(LTP_LOG_FATAL, "%s:line %d:%s(): " msg, __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__); \
 } while (0);
 
 #endif  // end for __LTP_LOG_H__

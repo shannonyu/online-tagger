@@ -16,7 +16,6 @@ string asctime(struct tm* timenow) {
     return S.str();
 }
 
-
 void write_log(int lvl, char *fmt, ...) {
     if (lvl == 0) {
         fprintf(stderr, "[DEBUG] ");

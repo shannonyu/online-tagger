@@ -21,13 +21,9 @@ namespace framework {
 /*
  * Class Decoder
  *
- *
- *
- *
- *
- *
+ *  The class decoder define interface of decoding instance with
+ *  certain parameter and return the decode results
  */
-
 class Decoder {
 public:
     Decoder() {}

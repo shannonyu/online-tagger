@@ -14,6 +14,7 @@
 #include "segment-extractor.h"
 
 #include "online-learner.h"
+
 /* ----------------------------------------------
  *  Functions for preload labels. To avoid some
  *  inconsistence cause by the labels in small
@@ -32,6 +33,7 @@ void preload_Labels(Alphabet *labels) {
 int
 main_learn(ltp_configure *cfg) {
 
+     /*  Process of reading */
     Reader *reader = new SegmentReader();
 
     RawCorpus* trainCorpus = reader->read(cfg->config("train").c_str());
@@ -39,36 +41,37 @@ main_learn(ltp_configure *cfg) {
     RawCorpus* testCorpus = reader->read(cfg->config("test").c_str());
 
     if (NULL == trainCorpus) {
-        write_log(LTP_LOG_WARNING,
-                "Failed to load corpus.");
+        WARNING_LOG("Failed to load train corpus.");
         return -1;
     }
+    if (NULL == devCorpus)
+        WARNING_LOG("Failed to load dev corpus.");
+    if (NULL == testCorpus)
+        WARNING_LOG("Failed to load test corpus");
 
-    write_log(LTP_LOG_TRACE,
-            "Reading corpus is done.");
+    TRACE_LOG("Reading corpus is done.");
     write_log(LTP_LOG_TRACE,
             "Read train corpus [%d] line", trainCorpus->size());
 
     Alphabet *features = new HashDict();
     Alphabet *labels   = new HashDict();
     Alphabet *chars    = new HashDict();
+
     preload_Labels(labels);
 
     Extractor *extractor = new SegmentExtractor(
             cfg->config("dict").c_str(),
-            features,
-            labels,
-            chars);
+            features, labels, chars);
 
-    Data* trainData = extractor->extract(trainCorpus, true);
-    write_log(LTP_LOG_TRACE, "train data loaded.");
-    Data* devData = extractor->extract(devCorpus);
-    write_log(LTP_LOG_TRACE, "dev data loaded.");
-    Data* testData = extractor->extract(testCorpus);
-    write_log(LTP_LOG_TRACE, "test data loaded.");
+    Data* trainData = extractor->extract(trainCorpus, true); TRACE_LOG("train instances is extracted.");
+    Data* devData = extractor->extract(devCorpus);           TRACE_LOG("dev instances is extracted.");
+    Data * testData = extractor->extract(testCorpus);        TRACE_LOG("test instance is extracted.");
 
-    write_log(LTP_LOG_TRACE,
-            "Extracting featrue is done.");
+    delete trainCorpus;
+    delete testCorpus;
+    delete devCorpus;
+
+    TRACE_LOG("Extracting featrue is done.");
 
     IndexBuilder *idbuilder = new IndexBuilder(features->size(), labels->size());
 
@@ -93,8 +96,7 @@ main_learn(ltp_configure *cfg) {
     model->registAlphabet("FEATURES", features);
     model->registAlphabet("LABELS", labels);
 
-    write_log(LTP_LOG_TRACE,
-            "Decoder, Trainer, Evaluator is prepared.");
+    TRACE_LOG("Decoder, Trainer, Evaluator is prepared.");
 
     OnlineLearner *learner = new OnlineLearner(
             cfg, model, decoder, trainer, evaluator);
@@ -104,11 +106,6 @@ main_learn(ltp_configure *cfg) {
     // delete rule;
     // delete idbuilder;
     delete decoder;
-
-    delete trainCorpus;
-    delete testCorpus;
-    delete devCorpus;
-
     delete trainData;
     delete devData;
     delete testData;

@@ -105,11 +105,13 @@ PostagExtractor :: extract(RawSentence *sent, bool append) {
         featStrCache.push_back("Length=" + lengthout.str());
         featStrCache.push_back("BE=" + chars[0] + "/" + chars[num_chars - 1]);
 
-        for (string prefix = "", int j = 0; j < 3 && j < num_chars; ++ j) {
+        string prefix = "";
+        for (int j = 0; j < 3 && j < num_chars; ++ j) {
             prefix = prefix + chars[j];              featStrCache.push_back("Prefix=" + prefix);
         }
 
-        for (string suffix = "", int j = num_chars - 1; j >= 0 && j >= num_chars - 3; -- j) {
+        string suffix = "";
+        for (int j = num_chars - 1; j >= 0 && j >= num_chars - 3; -- j) {
             suffix = chars[j] + suffix;              featStrCache.push_back("Suffix=" + suffix);
         }
 

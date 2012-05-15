@@ -37,6 +37,7 @@ public:
      *  @param[in/out]  globalParam the global parameter.
      */
     void learn(Data *train, Data *dev, Data *test);
+
 private:
     /*
      * Method for learn one iteration
