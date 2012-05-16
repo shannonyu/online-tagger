@@ -23,8 +23,7 @@ main_tag(ltp_configure *cfg) {
     if (NULL == corpus) {
         return -1;
     }
-    write_log(LTP_LOG_TRACE,
-            "Reading corpus is done.");
+    TRACE_LOG("Reading corpus is done.");
 
     Alphabet *featAlpha = new HashDict();
     Alphabet *tagAlpha  = new HashDict();
@@ -37,11 +36,10 @@ main_tag(ltp_configure *cfg) {
     model->registAlphabet("LABELS",   tagAlpha);
     model->registParameter("PARAMETER", param);
     if (model->loadModel(cfg->config("model").c_str()) != 0) {
-        write_log(LTP_LOG_WARNING, "Failed to load model.");
+        WARNING_LOG("Failed to load model.");
         return -1;
     }
-
-    write_log(LTP_LOG_TRACE, "Model is loaded.");
+    TRACE_LOG("Loading model is done.");
 
     fprintf(stderr, ">> Model Information\n");
     fprintf(stderr, "* Number of features: %d\n", featAlpha->size());
@@ -81,6 +79,6 @@ main_tag(ltp_configure *cfg) {
     evaluator->end();
     evaluator->report();
 
-    write_log(LTP_LOG_TRACE, "Decode is done.");
+    TRACE_LOG("Tagging is done.");
     return 0;
 }

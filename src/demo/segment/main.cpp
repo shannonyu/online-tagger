@@ -39,8 +39,7 @@ main(int argc, const char **argv) {
     init_config(cfg);
 
     if (cfg->load_cfg(*(const char **)argtable->option("config")) == -1) {
-        write_log( LTP_LOG_WARNING, 
-                "load config file [%s] failed.",
+        WARNING_LOG("load config file [%s] failed.",
                 *(const char **)argtable->option("config") );
         return -1;
     }

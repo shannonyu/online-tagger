@@ -63,8 +63,7 @@ OnlineLearner :: learnIter(Data *data, int iter) {
         delete results;
 
         if((i+1) % 1000 == 0) {
-            write_log(LTP_LOG_TRACE,
-                    "[%d] instances is trained.", (i+1));
+            TRACE_LOG("[%d] instances is trained.", (i+1));
         }
     }
 

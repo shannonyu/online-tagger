@@ -23,8 +23,7 @@ main_tag(ltp_configure *cfg) {
     if (NULL == corpus) {
         return -1;
     }
-    write_log(LTP_LOG_TRACE,
-            "Reading corpus is done.");
+    TRACE_LOG("Reading corpus is done.");
 
     Alphabet *features = new HashDict();
     Alphabet *labels = new HashDict();
@@ -36,9 +35,9 @@ main_tag(ltp_configure *cfg) {
     model->registAlphabet("LABELS", labels);
     model->registParameter("PARAMETER", param);
     model->loadModel(cfg->config("model").c_str());
+    TRACE_LOG("Loading model is done.");
 
     const char *dictFile = cfg->config("dict").c_str();
-    write_log(LTP_LOG_TRACE, "");
     Extractor *extractor = new SegmentExtractor(dictFile, features, labels, words);
     Data *data = extractor->extract(corpus, false);
 
@@ -50,6 +49,6 @@ main_tag(ltp_configure *cfg) {
     OnlineTagger *tagger = new OnlineTagger(cfg, decoder, evaluator, param);
     tagger->tag(data);
 
-    write_log(LTP_LOG_TRACE, "");
+    TRACE_LOG("Tagging is done.");
     return 0;
 }
