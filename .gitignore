@@ -33,3 +33,7 @@ script/
 # test folder #
 ###############
 src/test/
+
+# gprof output #
+################
+gmon.out
