@@ -108,7 +108,7 @@ CParameter :: copy(CParameter *param) {
 
 inline double
 CParameter :: value(int key) {
-    return m_Parameters[key];
+    // return m_Parameters[key];
     if (key >= 0 && key < m_Size) {
         return m_Parameters[key];
     }

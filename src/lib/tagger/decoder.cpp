@@ -218,7 +218,7 @@ RuleDecoder :: decode(Instance *inst, Parameter *param) {
         for (int label = 0; label < numLabels; ++ label) {
 
             uniScoreCache[i][label] = 0.0;
-            if (m_Rule->legal(item->item(), label) == false) {
+            if (m_Rule->legal(item->form(), label) == false) {
                 continue;
             }
 
@@ -252,7 +252,7 @@ RuleDecoder :: decode(Instance *inst, Parameter *param) {
     for (int i = 0; i < len; ++ i) {
 
         for (int currLabel = 0; currLabel < numLabels; ++ currLabel) {
-            if ( m_Rule->legal( items->at(i)->item(), currLabel ) == false ) {
+            if ( m_Rule->legal( items->at(i)->form(), currLabel ) == false ) {
                 continue;
             }
             if (i == 0 ) {
@@ -264,7 +264,7 @@ RuleDecoder :: decode(Instance *inst, Parameter *param) {
                         DecodeState *prev = states[i - 1][prevLabel].at(j);
                         double score = prev->score + 
                             uniScoreCache[i][currLabel] + biScoreCache[prevLabel][currLabel];
-                        states[i][currLabel].insert( DecodeState( currLabel, score, prev) );
+                        states[i][currLabel].insert(DecodeState(currLabel, score, prev));
                     }
                 }
             }

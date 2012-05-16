@@ -15,7 +15,10 @@
 // CItem::Operations
 // ==============================================
 
-CItem :: CItem(int numLabels) : m_NumLabels(numLabels), m_Word(-1) {
+
+CItem :: CItem(int numLabels) : m_NumLabels(numLabels), m_Form(-1) {
+
+#if __PAIR_HASH__
     m_NumFeats = new int[numLabels];
     m_CapFeats = new int[numLabels];
     m_Features = new int *[numLabels];
@@ -25,10 +28,18 @@ CItem :: CItem(int numLabels) : m_NumLabels(numLabels), m_Word(-1) {
         m_CapFeats[i] = 0;
         m_Features[i] = 0;
     }
+
+#else
+    m_NumFeats = 0;
+    m_CapFeats = 0;
+    m_Features = 0;
+#endif
 }
 
 CItem :: CItem(int numLabels, 
-        int word) : m_NumLabels(numLabels), m_Word(word) {
+        int form) : m_NumLabels(numLabels), m_Form(form) {
+
+#if __PAIR_HASH__
     m_NumFeats = new int[numLabels];
     m_CapFeats = new int[numLabels];
     m_Features = new int *[numLabels];
@@ -38,15 +49,28 @@ CItem :: CItem(int numLabels,
         m_CapFeats[i] = 0;
         m_Features[i] = 0;
     }
+
+#else
+    m_NumFeats = 0;
+    m_CapFeats = 0;
+    m_Features = 0;
+#endif
+
 }
 
 CItem :: ~CItem() {
+
+#if __PAIR_HASH__
     delete [] m_NumFeats;
     delete [] m_CapFeats;
     for (int i = 0; i < m_NumLabels; ++ i) {
         delete [] m_Features[i];
     }
     delete [] m_Features;
+#else
+    delete [] m_Features;
+#endif
+
 }
 
 void
@@ -54,7 +78,7 @@ CItem :: append(int feat, int label) {
     if (label < 0 || label >= m_NumLabels) {
         return;
     }
-
+#if __PAIR_HASH__
     if (m_CapFeats[label] <= m_NumFeats[label]) {
         m_CapFeats[label] = ((m_CapFeats[label] << 1) + 1);
         m_Features[label] = (int *)realloc(
@@ -62,6 +86,16 @@ CItem :: append(int feat, int label) {
     }
     m_Features[label][m_NumFeats[label]] = feat;
     ++ m_NumFeats[label];
+
+#else
+    if (m_CapFeats <= m_NumFeats) {
+        m_CapFeats = ((m_CapFeats << 1) + 1);
+        m_Features = (int *)realloc(m_Features, m_CapFeats * sizeof(int));
+    }
+    m_Features[m_NumFeats] = feat;
+    ++ m_NumFeats;
+#endif
+
 }
 
 inline int
@@ -70,9 +104,15 @@ CItem :: at(int index, int label) {
         return -1;
     }
 
+#if __PAIR_HASH__
     if (index >= 0 && index < m_NumFeats[label]) {
         return m_Features[label][index];
     }
+#else
+    if (index >= 0 && index < m_NumFeats) {
+        return m_Features[index] * m_NumLabels + label;
+    }
+#endif
     return -1;
 }
 
@@ -80,12 +120,16 @@ inline int
 CItem :: size(int label) {
     if (label < 0 || label >= m_NumLabels)
         return -1;
+#if __PAIR_HASH__
     return m_NumFeats[label];
+#else
+    return m_NumFeats;
+#endif
 }
 
 inline int
-CItem :: item() {
-    return m_Word;
+CItem :: form() {
+    return m_Form;
 }
 
 // ==============================================

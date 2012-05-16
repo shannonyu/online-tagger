@@ -147,14 +147,20 @@ PostagExtractor :: extract(RawSentence *sent, bool append) {
         }
 
 #define INDEX(x, y) ((x) * (numLabels) + (y))
+/*
         for (int j = 0; j < numLabels; ++ j) {
             for (int k = 0; k < featIntCache.size(); ++ k) {
                 item->append(INDEX(featIntCache[k], j), j);
             }
         }
+*/
 #undef INDEX
 
-        items->append( item );
+        for (int k = 0; k < featIntCache.size(); ++ k) {
+            item->append(featIntCache[k], 0);
+        }
+
+        items->append(item);
         labels->append(m_LabelDict->lookup(sent->at(i)->tag()));
     }
 

@@ -94,7 +94,7 @@ PostagEvaluator :: evaluate(Labels* result, Instance* inst, bool accumulate) {
     if (accumulate) {
         ++ m_NumInstances;
         for (int i = 0; i < result->size(); ++ i) {
-            bool inLexicon = m_GoldWords.find(items->at(i)->item()) != m_GoldWords.end();
+            bool inLexicon = m_GoldWords.find(items->at(i)->form()) != m_GoldWords.end();
             if (inLexicon) {
                 ++ m_NumGoldWordsInLexicon;
                 ++ m_NumPredWordsInLexicon;
@@ -126,7 +126,7 @@ PostagEvaluator :: evaluate(Labels* result, Instance* inst, bool accumulate) {
         int numCorrPredWordsOutLexicon = 0;
 
         for (int i = 0; i < result->size(); ++ i) {
-            bool inLexicon = m_GoldWords.find(items->at(i)->item()) != m_GoldWords.end();
+            bool inLexicon = m_GoldWords.find(items->at(i)->form()) != m_GoldWords.end();
             if (inLexicon) {
                 ++ numGoldWordsInLexicon;
                 ++ numPredWordsInLexicon;

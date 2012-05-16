@@ -27,8 +27,7 @@ main_learn(ltp_configure *cfg) {
     RawCorpus* devCorpus = reader->read(cfg->config("devolop").c_str());
     RawCorpus* testCorpus = reader->read(cfg->config("test").c_str());
 
-    write_log(LTP_LOG_TRACE,
-            "Reading corpus is done.");
+    TRACE_LOG("Reading corpus is done.");
 
     Alphabet *featAlpha = new HashDict();
     Alphabet *tagAlpha  = new HashDict();
@@ -41,12 +40,13 @@ main_learn(ltp_configure *cfg) {
     Data *devData   = extractor->extract(devCorpus);
     Data *testData  = extractor->extract(testCorpus);
 
-    write_log(LTP_LOG_TRACE,
-            "Extracting featrue is done.");
-    write_log(LTP_LOG_TRACE,
-            "Features number [%d]", featAlpha->size());
-    write_log(LTP_LOG_TRACE,
-            "Labels number [%d]", tagAlpha->size());
+    delete trainCorpus;
+    delete devCorpus;
+    delete testCorpus;
+
+    TRACE_LOG("Extracting featrue is done.");
+    TRACE_LOG("Features number [%d]", featAlpha->size());
+    TRACE_LOG("Labels number [%d]", tagAlpha->size());
 
     DecodeRule *rule = new DecodeRule(itemAlpha, tagAlpha);
     if (rule->load(cfg->config("dict").c_str()) == -1 ) {
@@ -77,9 +77,6 @@ main_learn(ltp_configure *cfg) {
     model->registAlphabet("FEATURES", featAlpha);
     model->registAlphabet("LABELS",   tagAlpha);
 
-    write_log(LTP_LOG_TRACE,
-            "Decoder, Trainer, Evaluator is prepared.");
-
     OnlineLearner *learner = new OnlineLearner(
             cfg, model, decoder, trainer, evaluator);
 
@@ -88,11 +85,6 @@ main_learn(ltp_configure *cfg) {
     // delete rule;
     // delete idbuilder;
     delete decoder;
-
-    delete trainCorpus;
-    delete testCorpus;
-    delete devCorpus;
-
     delete trainData;
     delete devData;
     delete testData;

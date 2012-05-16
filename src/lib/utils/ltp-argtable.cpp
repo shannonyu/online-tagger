@@ -1,20 +1,20 @@
 #include "ltp-argtable.h"
 
-ltp_argtable :: ltp_argtable() : usage(0) {
+ltp_argtable::ltp_argtable() : usage(0) {
     entries.clear();
 }
 
-ltp_argtable :: ltp_argtable(const char *_usage) : usage(_usage) {
+ltp_argtable::ltp_argtable(const char *_usage) : usage(_usage) {
     entries.clear();
 }
 
-ltp_argtable :: ~ltp_argtable() {
+ltp_argtable::~ltp_argtable() {
     for (int i = 0; i < entries.size(); ++ i) {
         delete entries[i];
     }
 }
 
-void ltp_argtable :: add_option(const char *short_opt,
+void ltp_argtable::add_option(const char *short_opt,
         const char *long_opt,
         const char *data_type,
         const char *dest_name,
@@ -43,7 +43,7 @@ void ltp_argtable :: add_option(const char *short_opt,
     entries.push_back( entry );
 }
 
-int ltp_argtable :: parse_args(int argc, const char **argv) {
+int ltp_argtable::parse_args(int argc, const char **argv) {
     for (int i = 0; i < argc; ++ i) {
         int len = strlen(argv[i]);
         int entry_idx = -1;
@@ -88,13 +88,13 @@ int ltp_argtable :: parse_args(int argc, const char **argv) {
 
 }
 
-void *ltp_argtable :: option(const char *dest_name) {
+void* ltp_argtable::option(const char *dest_name) {
     arg_entry *entry = arg_find_entry(dest_name);
     if (entry == NULL) return NULL;
     else return entry->value;
 }
 
-void ltp_argtable :: print_glossary() {
+void ltp_argtable::print_glossary() {
     if (usage != NULL) {
         fprintf(stderr, "usage: %s\n\n", usage);
     } else {
@@ -102,7 +102,7 @@ void ltp_argtable :: print_glossary() {
     }
 
     for (int i = 0; i < entries.size(); ++ i) {
-        fprintf( stderr, "\t-%s --%-19s %s\n",
+        fprintf(stderr, "\t-%s --%-19s %s\n",
                 entries[i]->short_opt,
                 entries[i]->long_opt,
                 entries[i]->glossary);
@@ -111,7 +111,7 @@ void ltp_argtable :: print_glossary() {
     fprintf(stderr, "\n");
 }
 
-void ltp_argtable :: arg_set_entry(arg_entry *entry, const char *value) {
+void ltp_argtable::arg_set_entry(arg_entry *entry, const char *value) {
     if (entry->data_type == ARG_LIT) {
         *((bool *)entry->value) = true;
     } else if (entry->data_type == ARG_INT) {
@@ -123,7 +123,7 @@ void ltp_argtable :: arg_set_entry(arg_entry *entry, const char *value) {
     }
 }
 
-ltp_argtable :: arg_entry *ltp_argtable :: arg_find_entry(const char *dest_name) {
+ltp_argtable::arg_entry* ltp_argtable::arg_find_entry(const char *dest_name) {
     for (int i = 0; i < entries.size(); ++ i) {
         if (strcmp(entries[i]->dest_name, dest_name) == 0) {
             return entries[i];

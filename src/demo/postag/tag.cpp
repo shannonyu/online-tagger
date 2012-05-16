@@ -72,7 +72,7 @@ main_tag(ltp_configure *cfg) {
         Items *items = inst->items();
         for (int j = 0; j < items->size(); ++ j) {
             fprintf(stderr, "%s_%s",
-                    itemAlpha->rlookup(items->at(j)->item()),
+                    itemAlpha->rlookup(items->at(j)->form()),
                     tagAlpha->rlookup(results->best()->at(j)));
             fprintf(stdout, "%c", j == items->size() - 1 ? '\n' : ' ');
         }

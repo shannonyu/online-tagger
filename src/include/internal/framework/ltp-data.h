@@ -76,7 +76,7 @@ public:
      *
      * interface for get hash value of a forms.
      */
-    virtual int item() = 0;
+    virtual int form() = 0;
 };
 
 class Items {

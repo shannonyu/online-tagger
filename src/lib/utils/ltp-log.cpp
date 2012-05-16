@@ -1,6 +1,14 @@
 #include "ltp-log.h"
 
-string asctime(struct tm* timenow) {
+#include <iostream>
+#include <sstream>  // for ostringstream
+#include <ctime>    // for time
+#include <stdarg.h> // 
+#include <cstdio>   // for vfprintf
+using namespace std;
+
+
+string _asctime(struct tm* timenow) {
     ostringstream S;
     S << 1900 + timenow->tm_year;
     S << "/";
@@ -34,7 +42,7 @@ void write_log(int lvl, char *fmt, ...) {
 
     time(&now);
     timenow = localtime(&now);
-    fprintf( stderr, "%s ", asctime(timenow).c_str());
+    fprintf( stderr, "%s ", _asctime(timenow).c_str());
 
     va_list list;
     va_start(list, fmt);

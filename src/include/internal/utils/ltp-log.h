@@ -1,18 +1,21 @@
 #ifndef __LTP_LOG_H__
 #define __LTP_LOG_H__
 
-#include <iostream>
-#include <sstream>
-#include <ctime>
-#include <stdarg.h>
-#include <cstdio>
-using namespace std;
-
+/*
+ * Default log level
+ */
 #define LTP_LOG_DEBUG   0
 #define LTP_LOG_TRACE   1
 #define LTP_LOG_WARNING 2
 #define LTP_LOG_FATAL   3
 
+/*
+ * Function for writing log
+ *
+ *  @param[in]  lvl the log level
+ *  @param[in]  fmt the format string
+ *  @param[in]  ... the variable parameter
+ */
 void write_log(int lvl, char *fmt, ...);
 
 #define DEBUG_LOG(msg, ...) do { \

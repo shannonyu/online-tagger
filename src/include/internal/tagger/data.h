@@ -19,22 +19,32 @@
 using namespace std;
 using namespace ltp::framework;
 
+#define __PAIR_HASH__ 0
+
 class CItem : public Item {
 public:
     CItem(int numLabels);
-    CItem(int numLabels, int word);
+    CItem(int numLabels, int form);
     ~CItem();
 
     void append(int feat, int label);
     int at(int index, int label);
     int size(int label);
-    int item();
+    int form();
 private:
+
+#if __PAIR_HASH__
     int **m_Features;
     int *m_NumFeats;
     int *m_CapFeats;
+#else
+    int *m_Features;
+    int m_NumFeats;
+    int m_CapFeats;
+#endif
+
     int m_NumLabels;
-    int m_Word;
+    int m_Form;
 };
 
 class CItems : public Items {
