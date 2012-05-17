@@ -33,7 +33,8 @@ void preload_Labels(Alphabet *labels) {
 int
 main_learn(ltp_configure *cfg) {
 
-     /*  Process of reading */
+    fprintf(stderr, "==========\n");
+    /*  Process of reading */
     Reader *reader = new SegmentReader();
 
     RawCorpus* trainCorpus = reader->read(cfg->config("train").c_str());
@@ -62,13 +63,12 @@ main_learn(ltp_configure *cfg) {
             cfg->config("dict").c_str(),
             features, labels, chars);
 
-    Data* trainData = extractor->extract(trainCorpus, true); TRACE_LOG("train instances is extracted.");
-    Data* devData = extractor->extract(devCorpus);           TRACE_LOG("dev instances is extracted.");
-    Data* testData = extractor->extract(testCorpus);         TRACE_LOG("test instance is extracted.");
+    Data* trainData = extractor->extract(trainCorpus, true);
+    Data* devData = extractor->extract(devCorpus);
+    Data* testData = extractor->extract(testCorpus);
 
     if (NULL == trainData) {
         WARNING_LOG("No training instances is loaded.");
-        while(1){}
         return -1;
     }
 
@@ -76,10 +76,10 @@ main_learn(ltp_configure *cfg) {
     delete testCorpus;
     delete devCorpus;
 
-    TRACE_LOG("Extracting featrue is done.");
+    TRACE_LOG("Extracting feature is done.");
     TRACE_LOG("Num feat: %d", features->size());
     TRACE_LOG("Num label: %d", labels->size());
-    TRACE_LOG("Num char: %d", chars->size());
+    TRACE_LOG("Num forms: %d", chars->size());
 
     IndexBuilder *idbuilder = new IndexBuilder(features->size(), labels->size());
 

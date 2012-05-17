@@ -36,6 +36,8 @@ OnlineLearner :: ~OnlineLearner() {
 void
 OnlineLearner :: learn(Data *train, Data *dev, Data *test) {
 
+    fprintf(stderr, "==========\n");
+
     int bestModelIndex = -1;
     double bestModelAccuracy = 0.0;
     Parameter *bestModel = NULL;
@@ -49,7 +51,7 @@ OnlineLearner :: learn(Data *train, Data *dev, Data *test) {
             bestModelIndex = i;
             bestModelAccuracy = accuracy;
         }
-        delete param;
+        delete (CParameter *)param;
     }
 }
 
@@ -87,7 +89,7 @@ double
 OnlineLearner :: evaluateIter(Data *dev, Data *test, Parameter *param, int iter) {
 
     fprintf(stderr, ">> Reporting on iteration (%d)\n", iter + 1);
-    fprintf(stderr, ">> Dev\n");
+    fprintf(stderr, ">>> Dev\n");
     evaluator->start();
     for (int i = 0; i < dev->size(); ++ i) {
         Instance *inst = dev->at(i);
@@ -102,7 +104,7 @@ OnlineLearner :: evaluateIter(Data *dev, Data *test, Parameter *param, int iter)
     evaluator->report();
     double ret = evaluator->p();
 
-    fprintf(stderr, ">> Test\n");
+    fprintf(stderr, ">>> Test\n");
     evaluator->start();
     for (int i = 0; i < test->size(); ++ i) {
         Instance *inst = test->at(i);
@@ -121,6 +123,6 @@ OnlineLearner :: evaluateIter(Data *dev, Data *test, Parameter *param, int iter)
     model->registParameter("PARAMETER", param, true);
     model->saveModel(modelFile.c_str());
 
-    fprintf(stderr, "-------------------------\n");
+    fprintf(stderr, "----------\n");
     return ret;
 }

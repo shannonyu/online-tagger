@@ -21,6 +21,7 @@
 int
 main_learn(ltp_configure *cfg) {
 
+    fprintf(stderr, "==========\n");
     Reader *reader = new PostagReader();
 
     RawCorpus* trainCorpus = reader->read(cfg->config("train").c_str());
@@ -44,9 +45,10 @@ main_learn(ltp_configure *cfg) {
     delete devCorpus;
     delete testCorpus;
 
-    TRACE_LOG("Extracting featrue is done.");
-    TRACE_LOG("Features number [%d]", featAlpha->size());
-    TRACE_LOG("Labels number [%d]", tagAlpha->size());
+    TRACE_LOG("Extracting feature is done.");
+    TRACE_LOG("Num feat: %d", featAlpha->size());
+    TRACE_LOG("Num label: %d", tagAlpha->size());
+    TRACE_LOG("Num forms: %d", itemAlpha->size());
 
     DecodeRule *rule = new DecodeRule(itemAlpha, tagAlpha);
     if (rule->load(cfg->config("dict").c_str()) == -1 ) {
