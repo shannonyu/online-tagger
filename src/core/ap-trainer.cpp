@@ -8,6 +8,7 @@
  *
  *
  */
+#include "ap-trainer.h"
 
 void
 PerceptronTrainer :: train(Instance *inst, DecodeResults *results, Parameter *param, double curUpdSeq) {
