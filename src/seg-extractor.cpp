@@ -8,9 +8,9 @@
  *
  *
  */
-#include "segment-extractor.h"
+#include "seg-extractor.h"
 
-#include "data.h"
+#include "c-data.h"
 #include "cppstrlib.h"
 #include <sstream>
 

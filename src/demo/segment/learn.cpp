@@ -86,7 +86,7 @@ main_learn(ltp_configure *cfg) {
 
     int agenda = atoi(cfg->config("agenda").c_str());
 
-    Decoder *decoder = new SegDecoder(idbuilder, agenda);
+    Decoder *decoder = new SegmentDecoder(idbuilder, agenda);
     Evaluator *evaluator = new SegmentEvaluator(
             cfg->config("dict").c_str(), chars, labels);
 

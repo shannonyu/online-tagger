@@ -8,9 +8,9 @@
  *
  *
  */
-#include "decoder.h"
+#include "seg-decoder.h"
 #include "k-heap.h"
-#include "data.h"
+#include "cpp-data.h"
 #include "cppstrlib.h"
 
 #include <algorithm>
@@ -20,14 +20,14 @@ using namespace ltp::utility;
 // ----------------------------------------------
 // PLAIN DECODER
 // ----------------------------------------------
-PlainDecoder :: PlainDecoder(IndexBuilder *idbuilder, int agenda): m_IdBuilder(idbuilder), m_Agenda(agenda) {
+SegmentDecoder :: SegmentDecoder(IndexBuilder *idbuilder, int agenda): m_IdBuilder(idbuilder), m_Agenda(agenda) {
 }
 
-PlainDecoder :: ~PlainDecoder() {
+SegmentDecoder :: ~SegmentDecoder() {
 }
 
 DecodeResults *
-PlainDecoder :: decode(Instance *inst, Parameter *param) {
+SegmentDecoder :: decode(Instance *inst, Parameter *param) {
 
     Items *items = inst->items();
     int len = items->size();

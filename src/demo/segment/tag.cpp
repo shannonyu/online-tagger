@@ -2,16 +2,16 @@
 #include "ltp-configure.h"
 
 #include "corpus.h"
-#include "alphabet.h"
-#include "data.h"
-#include "parameter.h"
-#include "decoder.h"
+#include "hash-alphabet.h"
+#include "c-data.h"
+#include "c-parameter.h"
+#include "seg-decoder.h"
 #include "index-builder.h"
 
 #include "model.h"
-#include "segment-reader.h"
-#include "segment-evaluator.h"
-#include "segment-extractor.h"
+#include "seg-reader.h"
+#include "seg-evaluator.h"
+#include "seg-extractor.h"
 
 #include "online-tagger.h"
 
@@ -43,7 +43,7 @@ main_tag(ltp_configure *cfg) {
 
     IndexBuilder *idBuilder = new IndexBuilder(features->size(), labels->size());
     int agenda = atoi(cfg->config("agenda").c_str());
-    Decoder *decoder = new PlainDecoder(idBuilder, agenda);
+    Decoder *decoder = new SegmentDecoder(idBuilder, agenda);
     Evaluator *evaluator = new SegmentEvaluator(dictFile, words, labels);
 
     OnlineTagger *tagger = new OnlineTagger(cfg, decoder, evaluator, param);
