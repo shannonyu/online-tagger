@@ -1,17 +1,18 @@
 #include "ltp-log.h"
 #include "ltp-configure.h"
 
-#include "data.h"
+#include "c-data.h"
 #include "corpus.h"
 #include "model.h"
-#include "alphabet.h"
-#include "decoder.h"
-#include "trainer.h"
+#include "hash-alphabet.h"
+#include "seg-decoder.h"
+#include "ap-trainer.h"
+#include "mira-trainer.h"
 #include "index-builder.h"
 
-#include "segment-reader.h"
-#include "segment-evaluator.h"
-#include "segment-extractor.h"
+#include "seg-reader.h"
+#include "seg-evaluator.h"
+#include "seg-extractor.h"
 
 #include "online-learner.h"
 
@@ -85,7 +86,7 @@ main_learn(ltp_configure *cfg) {
 
     int agenda = atoi(cfg->config("agenda").c_str());
 
-    Decoder *decoder = new PlainDecoder(idbuilder, agenda);
+    Decoder *decoder = new SegDecoder(idbuilder, agenda);
     Evaluator *evaluator = new SegmentEvaluator(
             cfg->config("dict").c_str(), chars, labels);
 
