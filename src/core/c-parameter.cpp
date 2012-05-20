@@ -12,6 +12,9 @@
 #include "c-parameter.h"
 #include "string.h"
 
+#include "cppstrlib.h"
+#include "ltp-math-const.h"
+
 using namespace ltp::math;
 using namespace ltp::utility;
 

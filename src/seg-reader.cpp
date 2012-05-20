@@ -8,7 +8,7 @@
  *
  *
  */
-#include "segment-reader.h"
+#include "seg-reader.h"
 
 #include "corpus.h"
 #include "cppstrlib.h"

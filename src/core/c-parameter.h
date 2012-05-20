@@ -11,6 +11,8 @@
 #ifndef __C_PARAMETER_H__
 #define __C_PARAMETER_H__
 
+#include "ltp-parameter.h"
+
 using namespace std;
 using namespace ltp::framework;
 

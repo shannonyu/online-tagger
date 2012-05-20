@@ -12,6 +12,8 @@
 #define __C_DATA_H__
 
 #include "ltp-data.h"
+#include "stdio.h"
+#include "stdlib.h"
 
 using namespace std;
 using namespace ltp::framework;

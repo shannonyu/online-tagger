@@ -1,7 +1,7 @@
 #include "online-learner.h"
 
 #include "ltp-log.h"
-#include "parameter.h"
+#include "c-parameter.h"
 
 #include <sstream>
 

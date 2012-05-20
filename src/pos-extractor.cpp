@@ -8,8 +8,8 @@
  *
  *
  */
-#include "postag-extractor.h"
-#include "data.h"
+#include "pos-extractor.h"
+#include "c-data.h"
 #include "utf.h"
 
 #include <sstream>

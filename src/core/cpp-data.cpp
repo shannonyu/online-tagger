@@ -13,6 +13,8 @@
 // CppItem :: Operations
 // ==============================================
 
+#include "cpp-data.h"
+
 CppItem :: CppItem(int numLabels) : m_NumLabels(numLabels), 
     m_Word(-1) {
     m_Features.resize(numLabels);

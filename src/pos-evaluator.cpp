@@ -8,7 +8,7 @@
  *
  */
 
-#include "postag-evaluator.h"
+#include "pos-evaluator.h"
 #include "cppstrlib.h"
 using namespace ltp::utility;
 

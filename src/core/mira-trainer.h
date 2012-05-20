@@ -13,7 +13,7 @@
 #define __MIRA_TRAINER_H__
 
 #include "ltp-trainer.h"
-#include "postag-evaluator.h"
+#include "pos-evaluator.h"
 #include "index-builder.h"
 
 using namespace ltp::framework;

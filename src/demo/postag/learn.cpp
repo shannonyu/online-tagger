@@ -1,17 +1,18 @@
 #include "ltp-log.h"
 #include "ltp-configure.h"
 
-#include "data.h"
+#include "c-data.h"
 #include "corpus.h"
 #include "model.h"
-#include "alphabet.h"
-#include "decoder.h"
-#include "trainer.h"
+#include "hash-alphabet.h"
+#include "pos-decoder.h"
+#include "mira-trainer.h"
+#include "ap-trainer.h"
 #include "index-builder.h"
 
-#include "postag-reader.h"
-#include "postag-evaluator.h"
-#include "postag-extractor.h"
+#include "pos-reader.h"
+#include "pos-evaluator.h"
+#include "pos-extractor.h"
 
 #include "online-learner.h"
 

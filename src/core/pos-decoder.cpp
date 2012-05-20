@@ -11,9 +11,9 @@
 /*
  * Decoder with (word, postag) rule pruning.
  */
-#include "rule-decoder.h"
+#include "pos-decoder.h"
 #include "k-heap.h"
-#include "data.h"
+#include "cpp-data.h"
 #include "cppstrlib.h"
 #include <algorithm>
 

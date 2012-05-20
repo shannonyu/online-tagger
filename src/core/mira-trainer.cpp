@@ -7,9 +7,9 @@
  *
  */
 
-#include "trainer.h"
-#include "data.h"
+#include "mira-trainer.h"
 
+#include "ltp-data.h"
 #include "ltp-math.h"
 using namespace ltp::math;
 

@@ -9,7 +9,7 @@
  *
  */
 
-#include "segment-evaluator.h"
+#include "seg-evaluator.h"
 
 #include <iostream>
 #include <string>

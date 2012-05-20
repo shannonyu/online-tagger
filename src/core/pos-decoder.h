@@ -1,5 +1,15 @@
-#ifndef __RULE_DECODER_H__
-#define __RULE_DECODER_H__
+/*
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+#ifndef __POS_DECODER_H__
+#define __POS_DECODER_H__
 
 #include "ltp-decoder.h"
 #include "ltp-alphabet.h"
@@ -63,4 +73,4 @@ private:
     DecodeRule *m_Rule;
 };
 
-#endif  // end for __RULE_DECODE_H__
+#endif  // end for __POS_DECODE_H__

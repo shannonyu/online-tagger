@@ -8,7 +8,7 @@
  *
  *
  */
-#include "postag-reader.h"
+#include "pos-reader.h"
 #include "cppstrlib.h"
 #include "corpus.h"
 

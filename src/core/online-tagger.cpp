@@ -1,6 +1,6 @@
 #include "online-tagger.h"
 
-#include "parameter.h"
+#include "c-parameter.h"
 #include "ltp-log.h"
 
 OnlineTagger :: OnlineTagger(ltp_configure *cfg,

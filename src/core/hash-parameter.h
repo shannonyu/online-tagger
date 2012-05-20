@@ -8,8 +8,8 @@
  *
  *
  */
-#ifndef __TAGGER_PARAMETER_H__
-#define __TAGGER_PARAMETER_H__
+#ifndef __HASH_PARAMETER_H__
+#define __HASH_PARAMETER_H__
 
 #include "ltp-parameter.h"
 #include <iostream>

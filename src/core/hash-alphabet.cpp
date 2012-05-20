@@ -8,7 +8,7 @@
  *
  *
  */
-#include "alphabet.h"
+#include "hash-alphabet.h"
 #include "cppstrlib.h"
 
 using namespace ltp::utility;

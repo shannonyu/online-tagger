@@ -2,16 +2,16 @@
 #include "ltp-configure.h"
 
 #include "corpus.h"
-#include "alphabet.h"
-#include "data.h"
-#include "parameter.h"
-#include "decoder.h"
+#include "hash-alphabet.h"
+#include "c-data.h"
+#include "c-parameter.h"
+#include "pos-decoder.h"
 #include "index-builder.h"
 
 #include "model.h"
-#include "postag-reader.h"
-#include "postag-evaluator.h"
-#include "postag-extractor.h"
+#include "pos-reader.h"
+#include "pos-evaluator.h"
+#include "pos-extractor.h"
 
 #include "online-tagger.h"
 
