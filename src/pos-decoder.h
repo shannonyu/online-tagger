@@ -1,13 +1,3 @@
-/*
- *
- *
- *
- *
- *
- *
- *
- *
- */
 #ifndef __RULE_DECODER_H__
 #define __RULE_DECODER_H__
 
@@ -35,7 +25,7 @@ private:
 
 class RuleDecoder : public Decoder {
 public:
-    RuleDecoder( DecodeRule *rule,
+    RuleDecoder(DecodeRule *rule,
             IndexBuilder *builder,
             int agenda) : m_Rule(rule), m_IdBuilder(builder), m_Agenda(agenda) {}
     ~RuleDecoder() {}
@@ -73,42 +63,4 @@ private:
     DecodeRule *m_Rule;
 };
 
-class PlainDecoder : public Decoder {
-public:
-    PlainDecoder(IndexBuilder *builder,
-            int agenda);
-    ~PlainDecoder();
-
-    DecodeResults *decode(Instance *inst, Parameter *param);
-
-private:
-    struct DecodeState {
-        DecodeState(): label(-1), score(NINF), prev(NULL) {}
-        DecodeState(int _label,
-                double _score,
-                DecodeState *_prev) : label(_label), score(_score), prev(_prev) {}
-        ~DecodeState() {}
-
-        bool operator < (const DecodeState& T) const {
-            return score < T.score - EPS;
-        }
-
-        bool operator > (const DecodeState& T) const {
-            return score > T.score + EPS;
-        }
-
-        bool operator == (const DecodeState& T) const {
-            return score >= T.score - EPS && score <= T.score + EPS;
-        }
-
-        int label;
-        double score;
-        DecodeState *prev;
-    };
-
-private:
-    int m_Agenda;
-    IndexBuilder *m_IdBuilder;
-};
-
-#endif  // end for __RULE_DECODER_H__
+#endif  // end for __RULE_DECODE_H__
