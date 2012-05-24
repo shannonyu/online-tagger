@@ -25,9 +25,34 @@ SegmentDecoder::SegmentDecoder(
         int agenda) {
     this->m_Model  = model;
     this->m_Agenda = agenda;
+    Alphabet *labelAlpha = model->getAlphabet("LABELS");
+    this->m_NumLabels = labelAlpha->size();
+
+    m_Legal = new int *[m_NumLabels + 1];
+    for (int i = 0; i <= m_NumLabels; ++ i) {
+        char prev = 'X';
+        if (i < m_NumLabels)
+            prev = labelAlpha->rlookup(i)[0];
+
+        m_Legal[i] = new int[m_NumLabels];
+        for (int j = 0; j < m_NumLabels; ++ j) {
+            char curr = labelAlpha->rlookup(j)[0];
+
+            m_Legal[i][j] = 0;
+            if ((prev == 'X' || prev == 'S' || prev == 'E') 
+                    && (curr == 'S' || curr == 'B'))
+                m_Legal[i][j] = 1;
+            if ((prev == 'M' || prev == 'B') && 
+                    (curr == 'M' || curr == 'E'))
+                m_Legal[i][j] = 1;
+        }
+    }
 }
 
-SegmentDecoder :: ~SegmentDecoder() {
+SegmentDecoder::~SegmentDecoder() {
+    for (int i = 0; i <= m_NumLabels; ++ i)
+        delete [] m_Legal[i];
+    delete [] m_Legal;
 }
 
 DecodeResults *
@@ -72,26 +97,20 @@ SegmentDecoder :: decode(Instance *inst, Parameter *param) {
         }
     }
 
-    // "B", "M", "E", "S"
-    const int legal[5][4] = {
-        {0, 1, 1, 0},
-        {0, 1, 1, 0},
-        {1, 0, 0, 1},
-        {1, 0, 0, 1},
-        {1, 0, 0, 1},
-    };
-
     for (int i = 0; i < len; ++ i) {
+        // fprintf(stderr, "i=%d\n", i);
         for (int currLabel = 0; currLabel < numLabels; ++ currLabel) {
             if (i == 0) {
-                if (legal[numLabels][currLabel] == 0)
+                // fprintf(stderr, "!%d->%d\n", numLabels, currLabel);
+                if (m_Legal[numLabels][currLabel] == 0) {
                     continue;
-                // printf("!%d->%d\n", numLabels, currLabel);
+                }
+
                 double score = uniScoreCache[0][currLabel] + biScoreCache[numLabels][currLabel];
                 states[i][currLabel].insert(DecodeState(currLabel, score, NULL));
             } else {
                 for (int prevLabel = 0; prevLabel < numLabels; ++ prevLabel) {
-                    if (legal[prevLabel][currLabel] == 0)
+                    if (m_Legal[prevLabel][currLabel] == 0)
                         continue;
                     for (int j = 0; j < states[i - 1][prevLabel].size(); ++ j) {
                         DecodeState *prev = states[i - 1][prevLabel].at(j);
@@ -112,7 +131,6 @@ SegmentDecoder :: decode(Instance *inst, Parameter *param) {
             result_cache.push_back( *states[len - 1][label].at(i) );
         }
     }
-
     sort( result_cache.begin(), result_cache.end() );
 
     DecodeResults *ret = new CppDecodeResults();

@@ -181,11 +181,12 @@ SegmentExtractor::extract(RawSentence *sent, bool append) {
 */
 #undef INDEX
         for (int k = 0; k < featIntCache.size(); ++ k) {
-            item->append(featIntCache[k], 0);
+            if (featIntCache[k] >= 0)
+                item->append(featIntCache[k], 0);
         }
 
         items->append(item);
-        labels->append(m_LabelDict->insert(sent->at(i)->tag()));
+        labels->append(m_LabelDict->lookup(sent->at(i)->tag()));
     }
 
     return new CInstance(items, labels);

@@ -5,6 +5,23 @@ INCLUDE_DIRECTORIES(
     ./math;
     ./utils)
 
+ADD_LIBRARY(otws;
+    ./demo/segment/otws_dll.h;
+    ./demo/segment/otws_dll.cpp;
+    ./core/c-parameter.cpp;
+    ./core/hash-alphabet.cpp;
+    ./core/c-data.cpp;
+    ./core/cpp-data.cpp;
+    ./core/seg-decoder.cpp;
+    ./core/model.cpp;
+    ./corpus.cpp;
+    ./seg-extractor.cpp;
+    ./utils/cppstrlib.cpp;
+    ./utils/ltp-argtable.cpp;
+    ./utils/ltp-configure.cpp;
+    ./utils/ltp-log.cpp)
+
+
 ADD_EXECUTABLE(postag;
     ./demo/postag/main.cpp;
     ./demo/postag/learn.cpp;

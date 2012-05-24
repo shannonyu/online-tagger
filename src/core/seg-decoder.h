@@ -55,7 +55,9 @@ private:
 
 private:
     int   m_Agenda;
+    int   m_NumLabels;
     Model *m_Model;
+    int **m_Legal;
 };
 
 #endif  // end for __SEG_DECODER_H__
