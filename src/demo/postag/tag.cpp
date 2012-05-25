@@ -34,6 +34,7 @@ main_tag(ltp_configure *cfg) {
     Model *model = new Model();
     model->registAlphabet("FEATURES", featAlpha);
     model->registAlphabet("LABELS",   tagAlpha);
+    model->registAlphabet("WORDS",    itemAlpha);
     model->registParameter("PARAMETER", param);
     if (model->loadModel(cfg->config("model").c_str()) != 0) {
         WARNING_LOG("Failed to load model.");
@@ -54,7 +55,6 @@ main_tag(ltp_configure *cfg) {
         rule = NULL;
     }
 
-    // IndexBuilder *idBuilder = new IndexBuilder(featAlpha->size(), tagAlpha->size());
     int agenda = atoi(cfg->config("agenda").c_str());
     Decoder *decoder = new RuleDecoder(rule, model, agenda);
     Evaluator *evaluator = new PostagEvaluator(cfg->config("dict").c_str(), itemAlpha);

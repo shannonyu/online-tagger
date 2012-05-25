@@ -21,6 +21,22 @@ ADD_LIBRARY(otws;
     ./utils/ltp-configure.cpp;
     ./utils/ltp-log.cpp)
 
+ADD_LIBRARY(otpos;
+    ./demo/postag/otpos_dll.h;
+    ./demo/postag/otpos_dll.cpp;
+    ./core/c-parameter.cpp;
+    ./core/hash-alphabet.cpp;
+    ./core/c-data.cpp;
+    ./core/cpp-data.cpp;
+    ./core/pos-decoder.cpp;
+    ./core/model.cpp;
+    ./corpus.cpp;
+    ./pos-extractor.cpp;
+    ./utils/cppstrlib.cpp;
+    ./utils/ltp-argtable.cpp;
+    ./utils/ltp-configure.cpp;
+    ./utils/ltp-log.cpp)
+
 
 ADD_EXECUTABLE(postag;
     ./demo/postag/main.cpp;

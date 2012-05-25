@@ -55,7 +55,7 @@ main_learn(ltp_configure *cfg) {
 
     model->registAlphabet("FEATURES", featAlpha);
     model->registAlphabet("LABELS",   tagAlpha);
-
+    model->registAlphabet("WORDS",    itemAlpha);
     DecodeRule *rule = new DecodeRule(itemAlpha, tagAlpha);
     if (rule->load(cfg->config("dict").c_str()) == -1 ) {
         rule = NULL;
