@@ -11,29 +11,19 @@
 #ifndef __OTPOS_DLL_H__
 #define __OTPOS_DLL_H__
 
-#include "ltp-log.h"
-#include "ltp-configure.h"
+#include <string>
+#include <vector>
 
-#include "corpus.h"
-#include "hash-alphabet.h"
-#include "c-data.h"
-#include "c-parameter.h"
-#include "pos-decoder.h"
+typedef void * otpos_t;
 
-#include "model.h"
-#include "pos-extractor.h"
+// load config file
+otpos_t OTPOS_Load(const char *cfg);
 
-#include "online-tagger.h"
+// destroy the engine
+int OTPOS_Destroy(otpos_t handle);
 
-struct OTPOS_Engine {
-    Model     *model;
-    Decoder   *decoder;
-    Extractor *extractor;
-};
-
-OTPOS_Engine *OTPOS_Load(const char *cfg);
-int OTPOS_Destroy(OTPOS_Engine *engine);
-int OTPOS_Postag_x(OTPOS_Engine *engine,
+// postag
+int OTPOS_Postag_x(otpos_t handle,
         const std::vector<std::string>& sent,
         std::vector<std::string>& pos);
 

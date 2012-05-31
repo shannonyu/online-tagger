@@ -1,6 +1,26 @@
 #include "otpos_dll.h"
 
-OTPOS_Engine *OTPOS_Load(const char *cfg_file) {
+#include "ltp-log.h"
+#include "ltp-configure.h"
+
+#include "corpus.h"
+#include "hash-alphabet.h"
+#include "c-data.h"
+#include "c-parameter.h"
+#include "pos-decoder.h"
+
+#include "model.h"
+#include "pos-extractor.h"
+
+#include "online-tagger.h"
+
+struct OTPOS_Engine {
+    Model     *model;
+    Decoder   *decoder;
+    Extractor *extractor;
+};
+
+otpos_t OTPOS_Load(const char *cfg_file) {
 
     // allocate config parser and set default config.
     ltp_configure *cfg = new ltp_configure();
@@ -49,16 +69,18 @@ OTPOS_Engine *OTPOS_Load(const char *cfg_file) {
     engine->extractor = extractor;
     engine->decoder = decoder;
 
-    return engine;
+    return reinterpret_cast<otpos_t>(engine);
 }
 
-int OTPOS_Destroy(OTPOS_Engine *engine) {
+int OTPOS_Destroy(otpos_t handle) {
     return 0;
 }
 
-int OTPOS_Postag_x(OTPOS_Engine *engine,
+int OTPOS_Postag_x(otpos_t handle,
         const std::vector<std::string>& sent,
         std::vector<std::string>& pos) {
+
+    OTPOS_Engine *engine = reinterpret_cast<OTPOS_Engine *>(handle);
 
     pos.clear();
     RawSentence *tag_sent = new TagSent();

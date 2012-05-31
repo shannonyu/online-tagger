@@ -1,11 +1,11 @@
-INCLUDE_DIRECTORIES(
+INCLUDE_DIRECTORIES (
     ./;
     ./framework;
     ./core;
     ./math;
     ./utils)
 
-ADD_LIBRARY(otws;
+ADD_LIBRARY (otws;
     ./demo/segment/otws_dll.h;
     ./demo/segment/otws_dll.cpp;
     ./core/c-parameter.cpp;
@@ -21,7 +21,7 @@ ADD_LIBRARY(otws;
     ./utils/ltp-configure.cpp;
     ./utils/ltp-log.cpp)
 
-ADD_LIBRARY(otpos;
+ADD_LIBRARY (otpos;
     ./demo/postag/otpos_dll.h;
     ./demo/postag/otpos_dll.cpp;
     ./core/c-parameter.cpp;

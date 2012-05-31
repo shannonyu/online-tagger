@@ -13,33 +13,19 @@
 
 #include <string>
 #include <vector>
-using namespace std;
 
-#include "ltp-log.h"
-#include "ltp-configure.h"
+typedef void * otws_t;
 
-#include "corpus.h"
-#include "hash-alphabet.h"
-#include "c-data.h"
-#include "c-parameter.h"
-#include "seg-decoder.h"
+// load config file
+otws_t OTWS_Load(const char *cfg_file);
 
-#include "model.h"
-#include "seg-reader.h"
-#include "seg-evaluator.h"
-#include "seg-extractor.h"
-#include "cppstrlib.h"
-#include "utf.h"
+// destroy otws_engine
+int OTWS_Destroy(otws_t handle);
 
-struct OTWS_Engine {
-    Model     *model;
-    Decoder   *decoder;
-    Extractor *extractor;
-};
-
-OTWS_Engine *OTWS_Load(const char *cfg_file);
-int OTWS_Destroy(OTWS_Engine *engine);
-// int OTWS_Wordseg(OTWS_Engine *engine, const char *sent, char **words);
-int OTWS_Wordseg_x(OTWS_Engine *engine, const string& sent, vector<string>& words);
+// wordseg
+int OTWS_Wordseg_x(otws_t handle, 
+        const std::string& sent, 
+        std::vector<std::string>& words);
+// int OTWS_Wordseg(otws_t *engine, const char *sent, char **words);
 
 #endif  // end for __OT_WORDSEG_DLL_H__

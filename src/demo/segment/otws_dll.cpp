@@ -10,7 +10,29 @@
  */
 #include "otws_dll.h"
 
-OTWS_Engine *OTWS_Load(const char *cfg_file) {
+#include "ltp-log.h"
+#include "ltp-configure.h"
+
+#include "corpus.h"
+#include "hash-alphabet.h"
+#include "c-data.h"
+#include "c-parameter.h"
+#include "seg-decoder.h"
+
+#include "model.h"
+#include "seg-reader.h"
+#include "seg-evaluator.h"
+#include "seg-extractor.h"
+#include "cppstrlib.h"
+#include "utf.h"
+
+struct OTWS_Engine {
+    Model     *model;
+    Decoder   *decoder;
+    Extractor *extractor;
+};
+
+otws_t OTWS_Load(const char *cfg_file) {
 
     // allocate config parser and set default config.
     ltp_configure *cfg = new ltp_configure();
@@ -56,23 +78,25 @@ OTWS_Engine *OTWS_Load(const char *cfg_file) {
     engine->extractor = extractor;
     engine->decoder = decoder;
 
-    return engine;
+    return reinterpret_cast<otws_t>(engine);
 }
 
-int OTWS_Destroy(OTWS_Engine *engine) {
+int OTWS_Destroy(otws_t handle) {
+
+    OTWS_Engine *engine = reinterpret_cast<OTWS_Engine *>(handle);
     if (engine->model)
-        delete engine->model;
+        delete (engine)->model;
 
     if (engine->extractor)
-        delete engine->extractor;
+        delete (engine)->extractor;
 
     if (engine->decoder)
-        delete engine->decoder;
+        delete (engine)->decoder;
 
     return 0;
 }
 
-int OTWS_Wordseg(OTWS_Engine *engine,
+int OTWS_Wordseg(otws_t engine,
         const char *sent,
         char **words) {
 
@@ -80,10 +104,11 @@ int OTWS_Wordseg(OTWS_Engine *engine,
     return 0;
 }
 
-int OTWS_Wordseg_x(OTWS_Engine *engine, 
+int OTWS_Wordseg_x(otws_t handle, 
         const string& sent,
         vector<string>& words) {
 
+    OTWS_Engine *engine = reinterpret_cast<OTWS_Engine *>(handle);
     words.clear();
 
     RawSentence *tag_sent = new TagSent();
@@ -98,7 +123,7 @@ int OTWS_Wordseg_x(OTWS_Engine *engine,
     }
     cerr << endl;
 
-    Instance *inst = engine->extractor->extract(tag_sent, false);
+    Instance *inst = (engine)->extractor->extract(tag_sent, false);
     Items *items = inst->items();
 
     Labels* labels = engine->decoder->decode(inst,
