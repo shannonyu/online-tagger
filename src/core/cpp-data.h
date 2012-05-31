@@ -91,7 +91,7 @@ private:
 class CppDecodeResults : public DecodeResults {
 public:
     CppDecodeResults() {}
-    ~CppDecodeResults() {}
+    ~CppDecodeResults();
 
     void append(Labels* result);
     Labels* at(int index);

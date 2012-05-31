@@ -53,6 +53,7 @@ PostagExtractor :: extract(RawCorpus *corpus, bool append) {
 
     for (int i = 0; i < corpus->size(); ++ i) {
         data->append(extract(corpus->at(i), append));
+        // fprintf(stderr, "%d\r", i+1);
     }
     return data;
 }
@@ -99,8 +100,18 @@ PostagExtractor :: extract(RawSentence *sent, bool append) {
         featStrCache.push_back("BWT[0,0]="   + curr_word + "/" + next_word);
         featStrCache.push_back("B2WT[-1,0]=" + prev_word + "/" + next_word);
         featStrCache.push_back("CW[-1,0]="   + prev_char + "/" + curr_word);
-        featStrCache.push_back("CW[1,0]="    +  next_char + "/" + curr_word);
+        featStrCache.push_back("CW[1,0]="    + next_char + "/" + curr_word);
 
+        if (num_chars == 0) {
+            fprintf(stderr, "===>> bug detected <<===\n");
+            fprintf(stderr, "sent:[");
+            for(int x = 0; x < len; ++ x) {
+                fprintf(stderr, "%s", sent->at(x)->item());
+                if (x < len - 1) fprintf(stderr, "|");
+            }
+            fprintf(stderr, "]\n");
+            fprintf(stderr, "i:[%d]\n", i);
+        }
         ostringstream lengthout; lengthout << num_chars;
         featStrCache.push_back("Length=" + lengthout.str());
         featStrCache.push_back("BE=" + chars[0] + "/" + chars[num_chars - 1]);

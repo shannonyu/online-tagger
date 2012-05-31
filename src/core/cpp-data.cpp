@@ -172,6 +172,12 @@ CppData :: size() {
 // CppDecodeResults :: Operations
 // ==============================================
 
+CppDecodeResults::~CppDecodeResults() {
+    for (int i = 0; i < m_Results.size(); ++ i) {
+        delete m_Results[i];
+    }
+}
+
 inline void
 CppDecodeResults :: append(Labels *result) {
     m_Results.push_back( result );

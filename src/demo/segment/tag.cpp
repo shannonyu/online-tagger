@@ -46,8 +46,48 @@ main_tag(ltp_configure *cfg) {
     Decoder *decoder = new SegmentDecoder(model, 1);
     Evaluator *evaluator = new SegmentEvaluator(dictFile, words, labels);
 
-    OnlineTagger *tagger = new OnlineTagger(cfg, decoder, evaluator, param);
-    tagger->tag(data);
+    for (int i = 0; i < data->size(); ++ i) {
+        Instance *inst = data->at(i);
+        DecodeResults *results = decoder->decode(inst, param);
+
+        Items *items = inst->items();
+        Labels *label = results->best();
+        vector<string> ret;
+        string tag;
+        string word;
+
+        for (int j = 0; j < items->size(); ) {
+            tag = labels->rlookup(label->at(j));
+            if ("S" == tag) {
+                word = corpus->at(i)->at(j)->item();
+                ret.push_back(word);
+                ++ j;
+            } else if ("B" == tag) {
+                word = "";
+                while ("E" != tag && j < items->size()) {
+                    word = word + corpus->at(i)->at(j)->item();
+                    tag = labels->rlookup(label->at(j));
+                    ++ j;
+                }
+                ret.push_back(word);
+            } else {
+                cerr << "Exception catchecd." << endl;
+                break;
+            }
+        }
+
+        for (int j = 0; j < ret.size(); ++ j) {
+            if (j == ret.size() - 1) {
+                cout << ret[j] << endl;
+            } else {
+                cout << ret[j] << "\t";
+            }
+        }
+
+        delete results;
+    }
+    // OnlineTagger *tagger = new OnlineTagger(cfg, decoder, evaluator, param);
+    // tagger->tag(data);
 
     TRACE_LOG("Tagging is done.");
     return 0;

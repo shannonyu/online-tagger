@@ -34,9 +34,9 @@ PostagReader :: hasNext() {
 
 RawSentence *
 PostagReader :: getNext() {
-    char buff[2048];
+    char buff[10005];
 
-    if (fgets(buff, 2048, fp) == NULL) {
+    if (fgets(buff, 10005, fp) == NULL) {
         return NULL;
     }
 
