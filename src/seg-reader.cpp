@@ -12,13 +12,12 @@
 
 #include "corpus.h"
 #include "cppstrlib.h"
-
-#define __GBK__ 0
+#include "def.h"
 
 #if __GBK__
-#include "gbk.h"
+    #include "gbk.h"
 #else
-#include "utf.h"
+    #include "utf.h"
 #endif
 
 using namespace ltp::utility;
@@ -43,9 +42,9 @@ SegmentReader :: hasNext() {
 
 RawSentence *
 SegmentReader :: getNext() {
-    char buff[2048];
+    char buff[10005];
 
-    if (fgets(buff, 2048, fp) == NULL) {
+    if (fgets(buff, 10005, fp) == NULL) {
         return NULL;
     }
 
@@ -104,3 +103,4 @@ SegmentReader :: read(const char *filename) {
     }
     return corpus;
 }
+

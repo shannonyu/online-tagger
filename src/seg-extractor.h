@@ -16,9 +16,8 @@
 
 #include "hash_map.hpp"
 
-#include <iostream>
+#include <string>
 
-using namespace std;
 using namespace ltp::framework;
 
 class SegmentExtractor : public Extractor {
@@ -28,16 +27,32 @@ public:
             Alphabet *featureDict,
             Alphabet *labelDict,
             Alphabet *charDict);
+
     ~SegmentExtractor();
 
-    Data     *extract(RawCorpus *corpus, bool append = false);
+    /*
+     *
+     *
+     *
+     *
+     *
+     */
+    Data *extract(RawCorpus *corpus, bool append = false);
+
+    /*
+     *
+     *
+     *
+     *
+     *
+     */
     Instance *extract(RawSentence *sent, bool append = false);
 private:
     Alphabet *m_FeatureDict;
     Alphabet *m_LabelDict;
     Alphabet *m_CharDict;
 
-    hash_set<string> m_Lexicon;
+    hash_set<std::string> m_Lexicon;
 };
 
 #endif  // end for __SENTENCE_EXTRACTOR_H__

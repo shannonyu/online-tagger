@@ -14,26 +14,26 @@
 
 using namespace ltp::utility;
 
-PostagReader :: PostagReader() {
+PostagReader::PostagReader() {
 }
 
-PostagReader :: ~PostagReader() {
+PostagReader::~PostagReader() {
 }
 
 int
-PostagReader :: open( const char *filename ) {
+PostagReader::open( const char *filename ) {
     fp = fopen(filename, "r");
     if (fp == NULL) return -1;
     else return 0;
 }
 
 bool
-PostagReader :: hasNext() {
+PostagReader::hasNext() {
     return (feof(fp) == false);
 }
 
 RawSentence *
-PostagReader :: getNext() {
+PostagReader::getNext() {
     char buff[10005];
 
     if (fgets(buff, 10005, fp) == NULL) {

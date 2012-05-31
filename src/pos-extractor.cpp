@@ -10,7 +10,13 @@
  */
 #include "pos-extractor.h"
 #include "c-data.h"
-#include "utf.h"
+#include "def.h"
+
+#if __GBK__
+    #include "gbk.h"
+#else
+    #include "utf.h"
+#endif
 
 #include <sstream>
 #include <iostream>
@@ -19,11 +25,12 @@
 using namespace ltp::framework;
 
 #define __FEATRUE_PLUS__ 0
-#define __CPP_DATA__ 0
 
 PostagExtractor :: PostagExtractor(Alphabet* featureDict,
         Alphabet* labelDict,
-        Alphabet* wordDict) : m_FeatureDict(featureDict), m_LabelDict(labelDict), m_WordDict(wordDict){
+        Alphabet* wordDict) : m_FeatureDict(featureDict), 
+    m_LabelDict(labelDict), 
+    m_WordDict(wordDict){
 }
 
 PostagExtractor :: ~PostagExtractor() {
@@ -79,17 +86,22 @@ PostagExtractor :: extract(RawSentence *sent, bool append) {
 
         vector<string> featStrCache;
         vector<int>    featIntCache;
+        vector<string> chars;
 
         string curr_word  = sent->at(i)->item();
         string prev_word  = (i - 1 >= 0)  ? sent->at(i - 1)->item() : "__BOS__";
         string prev_2word = (i - 2 >= 0)  ? sent->at(i - 2)->item() : "__BOS__";
         string next_word  = (i + 1 < len) ? sent->at(i + 1)->item() : "__EOS__";
         string next_2word = (i + 2 < len) ? sent->at(i + 2)->item() : "__EOS__";
+#if __GBK__
+        string prev_char  = (i - 1 >= 0)  ? GBK::getLastCharFromGBKString(prev_word)  : "__BOC__";
+        string next_char  = (i + 1 < len) ? GBK::getFirstCharFromGBKString(next_word) : "__EOC__";
+        int num_chars = GBK::getCharactersFromGBKString< vector<string> >(curr_word, &chars);
+#else
         string prev_char  = (i - 1 >= 0)  ? UTF::getLastCharFromUTF8String(prev_word)  : "__BOC__";
         string next_char  = (i + 1 < len) ? UTF::getFirstCharFromUTF8String(next_word) : "__EOC__";
-
-        vector<string> chars;
         int num_chars = UTF::getCharactersFromUTF8String< vector<string> >(curr_word, &chars);
+#endif
 
         featStrCache.push_back("UWT[-2,0]="  + prev_2word);
         featStrCache.push_back("UWT[-1,0]="  + prev_word);
@@ -102,7 +114,14 @@ PostagExtractor :: extract(RawSentence *sent, bool append) {
         featStrCache.push_back("CW[-1,0]="   + prev_char + "/" + curr_word);
         featStrCache.push_back("CW[1,0]="    + next_char + "/" + curr_word);
 
-        if (num_chars == 0) {
+        ostringstream lengthout; lengthout << num_chars;
+        featStrCache.push_back("Length=" + lengthout.str());
+
+        // Handle exception
+        // There is case where `_np` leading to no form but tag
+        if (num_chars)
+            featStrCache.push_back("BE=" + chars[0] + "/" + chars[num_chars - 1]);
+        else {
             fprintf(stderr, "===>> bug detected <<===\n");
             fprintf(stderr, "sent:[");
             for(int x = 0; x < len; ++ x) {
@@ -112,9 +131,6 @@ PostagExtractor :: extract(RawSentence *sent, bool append) {
             fprintf(stderr, "]\n");
             fprintf(stderr, "i:[%d]\n", i);
         }
-        ostringstream lengthout; lengthout << num_chars;
-        featStrCache.push_back("Length=" + lengthout.str());
-        featStrCache.push_back("BE=" + chars[0] + "/" + chars[num_chars - 1]);
 
         string prefix = "";
         for (int j = 0; j < 3 && j < num_chars; ++ j) {
@@ -156,16 +172,6 @@ PostagExtractor :: extract(RawSentence *sent, bool append) {
                 featIntCache[j] = m_FeatureDict->lookup(featStrCache[j]);
             }
         }
-
-#define INDEX(x, y) ((x) * (numLabels) + (y))
-/*
-        for (int j = 0; j < numLabels; ++ j) {
-            for (int k = 0; k < featIntCache.size(); ++ k) {
-                item->append(INDEX(featIntCache[k], j), j);
-            }
-        }
-*/
-#undef INDEX
 
         for (int k = 0; k < featIntCache.size(); ++ k) {
             item->append(featIntCache[k], 0);

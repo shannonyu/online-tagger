@@ -24,7 +24,8 @@ SegmentExtractor::SegmentExtractor(
         Alphabet *featureDict,
         Alphabet *labelDict,
         Alphabet *charDict) : m_FeatureDict(featureDict),
-    m_LabelDict(labelDict), m_CharDict(charDict) {
+    m_LabelDict(labelDict), 
+    m_CharDict(charDict) {
 
     char buff[2048];
 
@@ -171,15 +172,6 @@ SegmentExtractor::extract(RawSentence *sent, bool append) {
             }
         }
 
-#define INDEX(x, y) ((x) * (numLabels) + (y))
-/*
-        for (int j = 0; j < numLabels; ++ j) {
-            for (int k = 0; k < featIntCache.size(); ++ k) {
-                item->append(INDEX(featIntCache[k], j), j);
-            }
-        }
-*/
-#undef INDEX
         for (int k = 0; k < featIntCache.size(); ++ k) {
             if (featIntCache[k] >= 0)
                 item->append(featIntCache[k], 0);

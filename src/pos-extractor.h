@@ -18,12 +18,26 @@ using namespace ltp::framework;
 
 class PostagExtractor : public Extractor {
 public:
-    PostagExtractor(Alphabet *featureDict,
+    PostagExtractor(
+            Alphabet *featureDict,
             Alphabet *labelDict,
             Alphabet *wordDict);
+
     ~PostagExtractor();
 
+    /*
+     *
+     *
+     *
+     */
     Data *extract(RawCorpus *corpus, bool append = false);
+
+    /*
+     *
+     *
+     *
+     *
+     */
     Instance *extract(RawSentence *sent, bool append = false);
 private:
     Alphabet *m_FeatureDict;

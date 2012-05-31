@@ -38,8 +38,10 @@ public:
     bool hasNext();
 
     /*
+     * Get next RawSentence
      *
-     *
+     *  @return     RawSentence *   the pointer to the
+     *                              raw sentence
      */
     RawSentence *getNext();
 
