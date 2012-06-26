@@ -94,6 +94,7 @@ HashDict :: save(FILE *fp) {
             itx != m_Dict.end(); ++ itx) {
         fprintf(fp, "%s\t%d\n", itx->first.c_str(), itx->second);
     }
+    return 0;
 }
 
 int
