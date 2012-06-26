@@ -84,7 +84,7 @@ inline int getCharactersFromGBKString(const std::string &s, CSentence *sentence)
  *                          string.
  *
  *--------------------------------------------------------------*/
-inline string getFirstCharFromGBKString(const std::string &s) {
+inline std::string getFirstCharFromGBKString(const std::string &s) {
     if (s=="")
         return "";
     if ((s[0]&0x80) == 0) {
@@ -100,7 +100,7 @@ inline string getFirstCharFromGBKString(const std::string &s) {
  *                         string.
  *
  *--------------------------------------------------------------*/
-inline string getLastCharFromGBKString(const std::string &s) {
+inline std::string getLastCharFromGBKString(const std::string &s) {
     if (s=="")
         return "";
     unsigned long int idx=0;
