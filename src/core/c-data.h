@@ -15,7 +15,6 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-using namespace std;
 using namespace ltp::framework;
 
 #define __PAIR_HASH__ 0
