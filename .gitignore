@@ -24,7 +24,7 @@ log/
 
 # configure folder #
 ####################
-conf/
+# conf/
 
 # script folder #
 #################
