@@ -22,6 +22,7 @@
 #include <iostream>
 #include <vector>
 
+using namespace std;
 using namespace ltp::framework;
 
 #define __FEATRUE_PLUS__ 0
